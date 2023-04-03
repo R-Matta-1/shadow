@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>shadow</title>
+</head>
+<body>
+   <style>
+#grunglr{
+    height: 400.5px;
+    width: 400.5px;
+    border: hsl(0, 0%, 0%) 5px outset;
+  top: 50px;
+    transform: translate(50%,0);
+    position: absolute;
+  top: 15%;
+  left: 30px;
+
+   }
+#anothr{
+   font: 1em monospace;
+   align-items: center;
+   position: absolute;
+   top: 70px;
+   left: 20px;
+ 
+}
+   </style>
+
+<canvas id="grunglr"; height = 400.5 ; width = 400.5 ; onmousemove="bingo(event)" >  </canvas>
+
+
+
+<div id="anothr">jhgvkgvkhvkhvgkhgvkgvkhgvkh</div>
+
+   <script>
+   
+   var canvas = document.getElementById("grunglr")
+var ctx = canvas.getContext("2d");
+var cons = document.getElementById("anothr")
+
+class theSun {
+    constructor(X, Y, Z) {
+        this.x = X;
+        this.y = Y;
+         this.size = Z;
+    }
+    draw() {
+        ctx.fillStyle = "rgba(255, 58, 60, 1)";
+    ctx.strokeStyle = "rgba(255, 58, 60, 1)";
+	  ctx.beginPath();
+	ctx.arc(this.x,this.y,this.size ,0*Math.PI,2*Math.PI);
+	ctx.fill();
+	ctx.stroke(); 
+    }
+}  
+class camera{
+    constructor(X,Y,Direction,resolution){
+
+    }
+}
+var sunny = new theSun(50, 50, 35);
+sunny.draw();
+
+
+// ******************************************************************
+function bingo(Event) {
+    mouseX = Event.clientX - Event.currentTarget.offsetLeft - 200;
+    mouseY = Event.clientY - Event.currentTarget.offsetTop;
+    cons.innerHTML = " x is " + mouseX + " y is " + mouseY;
+}</script>
+</body>
+</html>
