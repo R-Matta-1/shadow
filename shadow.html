@@ -95,7 +95,7 @@ var mouseFoc = null;
 function bingo(Event) {
     mouseX = Event.clientX - Event.currentTarget.offsetLeft - 200;
     mouseY = Event.clientY - Event.currentTarget.offsetTop;
-    central.innerHTML = " x is " + mouseX + " y is " + mouseY +" focused to " +mouseFoc;
+    
     if (event.clientX <= 650) {
         mouseFoc = "caster"
 castCon.innerHTML = " x is " + mouseX + " y is " + mouseY
