@@ -8,7 +8,7 @@
 </head>
 <body>
    <style>
-#grunglr{
+#caster{
     height: 400.5px;
     width: 400.5px;
     border: hsl(0, 0%, 0%) 5px outset;
@@ -19,27 +19,52 @@
   left: 30px;
 
    }
-#anothr{
-   font: 1em monospace;
+   .canvas{
+    height: 400.5px;
+    width: 400.5px;
+    border: hsl(0, 0%, 0%) 5px outset;
+  top: 50px;
+    transform: translate(50%,0);
+    position: absolute;
+  
+   }
+   #stage{
+  top: 15%;
+  left: 460px;
+   }
+.cons{
+    font: 1.4em monospace;
    align-items: center;
    position: absolute;
-   top: 70px;
-   left: 20px;
- 
+}
+#castCons{
+ top: 50px;
+   left: 300px;
+}
+#central{
+    top: 500px;
+    left: 540px;
+}
+#stageCons{
+    top: 50px;
+    left: 800px;
 }
    </style>
 
-<canvas id="grunglr"; height = 400.5 ; width = 400.5 ; onmousemove="bingo(event)" >  </canvas>
+<canvas class="canvas" id="caster"; height = 400.5 ; width = 400.5 ; onmousemove="bingo(event)" >lmao wrnog browsr</canvas>
+<canvas class="canvas" id="stage"; height = 400.5 ; width = 400.5 ; onmousemove="bingo(event)">lmao wrnog browsr</canvas>
 
-
-
-<div id="anothr">jhgvkgvkhvkhvgkhgvkgvkhgvkh</div>
+<div class="cons"; id="castCons">what</div>
+<div class="cons"; id="central">this</div>
+<div class="cons"; id="stageCons">brokn?</div>
 
    <script>
    
-   var canvas = document.getElementById("grunglr")
-var ctx = canvas.getContext("2d");
-var cons = document.getElementById("anothr")
+   var caster = document.getElementById("caster")
+var ctx = caster.getContext("2d");
+var castCon = document.getElementById("castCons")
+var central = document.getElementById("central")
+var stageCon = document.getElementById("stageCons")
 
 class theSun {
     constructor(X, Y, Z) {
@@ -66,10 +91,18 @@ sunny.draw();
 
 
 // ******************************************************************
+var mouseFoc = null;
 function bingo(Event) {
     mouseX = Event.clientX - Event.currentTarget.offsetLeft - 200;
     mouseY = Event.clientY - Event.currentTarget.offsetTop;
-    cons.innerHTML = " x is " + mouseX + " y is " + mouseY;
+    central.innerHTML = " x is " + mouseX + " y is " + mouseY +" focused to " +mouseFoc;
+    if (event.clientX <= 650) {
+        mouseFoc = "caster"
+castCon.innerHTML = " x is " + mouseX + " y is " + mouseY
+    } else {
+        mouseFoc = "stage"
+        stageCon.innerHTML = " x is " + mouseX + " y is " + mouseY
+    }
 }</script>
 </body>
 </html>
