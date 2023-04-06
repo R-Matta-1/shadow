@@ -86,16 +86,55 @@ class camera{
 
     }
 }
-var sunny = new theSun(50, 50, 35);
-sunny.draw();
+var sunny = new theSun(200, 200, 35);
+
+var frames = 0
+function gameLoad(){
+  frames++
+  central.innerHTML = frames/360;
+  sunny.draw();
+  let y = 200
+//THIS CAN MAKE RAYS IF YOU REPLACE THE SUNNY X?Y AND MOOVE THE FILL TO DATA COLCT
+while (y >=4) {
+  ctx.translate(sunny.x, sunny.y);
+  ctx.rotate((frames * Math.PI) / 180);
+  
+    ctx.fillStyle = "black"
+  	  ctx.fillRect(0,y, 1, 1)
+      y--
+      ctx.translate(sunny.x*=-1, sunny.y *=-1);
 
 
-// ******************************************************************
+
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+}
+  
+}
+
+// ***************************************************************
+document.onkeydown = keypress;
+  
+  function keypress(event) {
+    central.innerHTML = event.code
+    switch (event.code) {
+      case "Space":
+        setInterval(gameLoad, 1000/100);
+        break;
+        case "ArrowRight":
+        
+        break;
+        case "ArrowLeft":
+        
+        break;
+    
+      default:
+        break;
+    }
+  }
 var mouseFoc = null;
 function bingo(Event) {
     mouseX = Event.clientX - Event.currentTarget.offsetLeft - 200;
     mouseY = Event.clientY - Event.currentTarget.offsetTop;
-    
     if (event.clientX <= 650) {
         mouseFoc = "caster"
 castCon.innerHTML = " x is " + mouseX + " y is " + mouseY
