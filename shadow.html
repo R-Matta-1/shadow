@@ -59,57 +59,61 @@
 <div class="cons"; id="stageCons">brokn?</div>
 
    <script>
-   
+     class position {
+	constructor(x, y) {
+	  this.x = x
+	  this.y = y
+	}}
    var caster = document.getElementById("caster")
 var ctx = caster.getContext("2d");
 var castCon = document.getElementById("castCons")
 var central = document.getElementById("central")
 var stageCon = document.getElementById("stageCons")
-
+var test = 0
 class theSun {
-    constructor(X, Y, Z) {
-        this.x = X;
-        this.y = Y;
+    constructor(pos, Z) {
+        this.pos=pos
          this.size = Z;
     }
     draw() {
-        ctx.fillStyle = "rgba(255, 58, 60, 1)";
+      castCon.innerHTML=test
+      test++
+    ctx.fillStyle = "rgba(255, 58, 60, 1)";
     ctx.strokeStyle = "rgba(255, 58, 60, 1)";
 	  ctx.beginPath();
-	ctx.arc(this.x,this.y,this.size ,0*Math.PI,2*Math.PI);
+	ctx.arc(this.pos.x,this.pos.y,this.size ,0*Math.PI,2*Math.PI);
 	ctx.fill();
-	ctx.stroke(); 
+	ctx.stroke();
     }
 }  
-class camera{
-    constructor(X,Y,Direction,resolution){
+var sunny = new theSun(new position(200,200), 35);
 
-    }
-}
-var sunny = new theSun(200, 200, 35);
 
 var frames = 0
-function gameLoad(){
+function gameLoad() {
   frames++
-  central.innerHTML = frames/360;
-  sunny.draw();
+  ctx.clearRect(0, 0, caster.width, caster.height)
+
+
+
+	central.innerHTML = frames;
+  sunny.draw()
+	sunny.pos.x -=.5
+
+	//THIS CAN MAKE RAYS IF YOU REPLACE THE SUNNY X?Y AND MOOVE THE FILL TO DATA COLCT
   let y = 200
-//THIS CAN MAKE RAYS IF YOU REPLACE THE SUNNY X?Y AND MOOVE THE FILL TO DATA COLCT
-while (y >=4) {
-  ctx.translate(sunny.x, sunny.y);
-  ctx.rotate((frames * Math.PI) / 180);
-  
-    ctx.fillStyle = "black"
-  	  ctx.fillRect(0,y, 1, 1)
+  while (y >= 5) {
+		ctx.translate(sunny.pos.x, sunny.pos.y);
+		ctx.rotate((frames * Math.PI) / 180);
+		ctx.fillStyle = "black"
+		ctx.fillRect(0, y, 1, 1)
+		ctx.translate(sunny.pos.x *= -1, sunny.pos.y *= -1);
+		ctx.setTransform(1, 0, 0, 1, 0, 0);
       y--
-      ctx.translate(sunny.x*=-1, sunny.y *=-1);
+	}
+    }
+ 
 
-
-
-      ctx.setTransform(1, 0, 0, 1, 0, 0);
-}
-  
-}
 
 // ***************************************************************
 document.onkeydown = keypress;
@@ -118,7 +122,7 @@ document.onkeydown = keypress;
     central.innerHTML = event.code
     switch (event.code) {
       case "Space":
-        setInterval(gameLoad, 1000/100);
+        setInterval(gameLoad, 1000/50);
         break;
         case "ArrowRight":
         
