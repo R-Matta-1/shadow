@@ -58,94 +58,96 @@
 <div class="cons"; id="central">this</div>
 <div class="cons"; id="stageCons">brokn?</div>
 
-   <script>
-     class position {
-	constructor(x, y) {
-	  this.x = x
-	  this.y = y
-	}}
-   var caster = document.getElementById("caster")
-var ctx = caster.getContext("2d");
-var castCon = document.getElementById("castCons")
-var central = document.getElementById("central")
-var stageCon = document.getElementById("stageCons")
-var test = 0
-class theSun {
+   <script>class position {
+    constructor(x, y) {
+      this.x = x
+      this.y = y
+    }
+  }
+  var caster = document.getElementById("caster")
+  var ctx = caster.getContext("2d");
+  var castCon = document.getElementById("castCons")
+  var central = document.getElementById("central")
+  var stageCon = document.getElementById("stageCons")
+  var test = 0
+  class theSun {
     constructor(pos, Z) {
-        this.pos=pos
-         this.size = Z;
+      this.pos = pos
+      this.size = Z;
     }
     draw() {
-      castCon.innerHTML=test
+      castCon.innerHTML = test
       test++
-    ctx.fillStyle = "rgba(255, 58, 60, 1)";
-    ctx.strokeStyle = "rgba(255, 58, 60, 1)";
-	  ctx.beginPath();
-	ctx.arc(this.pos.x,this.pos.y,this.size ,0*Math.PI,2*Math.PI);
-	ctx.fill();
-	ctx.stroke();
+      ctx.fillStyle = "rgba(255, 58, 60, 1)";
+      ctx.strokeStyle = "rgba(255, 58, 60, 1)";
+      ctx.beginPath();
+      ctx.arc(this.pos.x, this.pos.y, this.size, 0 * Math.PI, 2 * Math.PI);
+      ctx.fill();
+      ctx.stroke();
     }
-}  
-var sunny = new theSun(new position(200,200), 35);
-
-
-var frames = 0
-function gameLoad() {
-  frames++
-  ctx.clearRect(0, 0, caster.width, caster.height)
-
-
-
-	central.innerHTML = frames;
-  sunny.draw()
-	sunny.pos.x -=.5
-
-	//THIS CAN MAKE RAYS IF YOU REPLACE THE SUNNY X?Y AND MOOVE THE FILL TO DATA COLCT
-  let y = 200
-  while (y >= 5) {
-		ctx.translate(sunny.pos.x, sunny.pos.y);
-		ctx.rotate((frames * Math.PI) / 180);
-		ctx.fillStyle = "black"
-		ctx.fillRect(0, y, 1, 1)
-		ctx.translate(sunny.pos.x *= -1, sunny.pos.y *= -1);
-		ctx.setTransform(1, 0, 0, 1, 0, 0);
+  }
+  var sunny = new theSun(new position(200, 200), 35);
+  
+  
+  var frames = 0
+  
+  function gameLoad() {
+    frames++
+    ctx.clearRect(0, 0, caster.width, caster.height)
+  
+  
+  
+    central.innerHTML = frames;
+    sunny.draw()
+    sunny.pos.x -= .5
+  
+    //THIS CAN MAKE RAYS IF YOU REPLACE THE SUNNY X?Y AND MOOVE THE FILL TO DATA COLCT
+    let y = 200
+    while (y >= 5) {
+      ctx.translate(sunny.pos.x, sunny.pos.y);
+      ctx.rotate((frames * Math.PI) / 180);
+      ctx.fillStyle = "black"
+      ctx.fillRect(0, y, 1, 1)
+      ctx.translate(sunny.pos.x *= -1, sunny.pos.y *= -1);
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
       y--
-	}
     }
- 
-
-
-// ***************************************************************
-document.onkeydown = keypress;
+  }
+  
+  
+  
+  // ***************************************************************
+  document.onkeydown = keypress;
   
   function keypress(event) {
     central.innerHTML = event.code
     switch (event.code) {
       case "Space":
-        setInterval(gameLoad, 1000/50);
+        setInterval(gameLoad, 1000 / 50);
         break;
-        case "ArrowRight":
-        
+      case "ArrowRight":
+  
         break;
-        case "ArrowLeft":
-        
+      case "ArrowLeft":
+  
         break;
-    
+  
       default:
         break;
     }
   }
-var mouseFoc = null;
-function bingo(Event) {
+  var mouseFoc = null;
+  
+  function bingo(Event) {
     mouseX = Event.clientX - Event.currentTarget.offsetLeft - 200;
     mouseY = Event.clientY - Event.currentTarget.offsetTop;
     if (event.clientX <= 650) {
-        mouseFoc = "caster"
-castCon.innerHTML = " x is " + mouseX + " y is " + mouseY
+      mouseFoc = "caster"
+      castCon.innerHTML = " x is " + mouseX + " y is " + mouseY
     } else {
-        mouseFoc = "stage"
-        stageCon.innerHTML = " x is " + mouseX + " y is " + mouseY
+      mouseFoc = "stage"
+      stageCon.innerHTML = " x is " + mouseX + " y is " + mouseY
     }
-}</script>
+  }</script>
 </body>
 </html>
