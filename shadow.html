@@ -54,9 +54,9 @@
 <canvas class="canvas" id="caster"; height = 400.5 ; width = 400.5 ; onmousemove="bingo(event)" >lmao wrnog browsr</canvas>
 <canvas class="canvas" id="stage"; height = 400.5 ; width = 400.5 ; onmousemove="bingo(event)">lmao wrnog browsr</canvas>
 
-<div class="cons"; id="castCons">what</div>
-<div class="cons"; id="central">this</div>
-<div class="cons"; id="stageCons">brokn?</div>
+<div class="cons"; id="castCons">gcgfd rtg</div>
+<div class="cons"; id="central">vghjhbghh</div>
+<div class="cons"; id="stageCons">iyfci?</div>
 
    <script>class position {
     constructor(x, y) {
@@ -64,16 +64,20 @@
       this.y = y
     }
   }
-  var caster = document.getElementById("caster")
-  var ctx = caster.getContext("2d");
-  var castCon = document.getElementById("castCons")
-  var central = document.getElementById("central")
-  var stageCon = document.getElementById("stageCons")
-  var test = 0
+  const caster = document.getElementById("caster");
+  const ctx = caster.getContext("2d");
+  const castCon = document.getElementById("castCons");
+  const central = document.getElementById("central");
+  const stageCon = document.getElementById("stageCons");
+  const stage = document.getElementById("stage");
+  const sctx = stage.getContext("2d");
+  var test = 0;
+  var rays = [];
   class theSun {
-    constructor(pos, Z) {
+    constructor(pos, Z, view) {
       this.pos = pos
       this.size = Z;
+      this.view = view
     }
     draw() {
       castCon.innerHTML = test
@@ -84,9 +88,25 @@
       ctx.arc(this.pos.x, this.pos.y, this.size, 0 * Math.PI, 2 * Math.PI);
       ctx.fill();
       ctx.stroke();
+      //raymaker********************
+      let y = sunny.size
+      while (y <= 150) {
+  
+        ctx.translate(sunny.pos.x, sunny.pos.y);
+        ctx.rotate((frames * Math.PI) / 180);
+  
+        var imgdata = ctx.getImageData(0, y, 1, 1).data
+        stageCon.innerHTML = imgdata
+        ctx.fillStyle = "black"
+        ctx.fillRect(0, y, 1, 1)
+            
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
+        y++
+      }
     }
   }
-  var sunny = new theSun(new position(200, 200), 35);
+  
+  var sunny = new theSun(new position(200, 200), 35, 0);
   
   
   var frames = 0
@@ -94,27 +114,16 @@
   function gameLoad() {
     frames++
     ctx.clearRect(0, 0, caster.width, caster.height)
-  
-  
-  
+    ctx.fillStyle = "#789"
+    ctx.fillRect(100, 50, 50, 100)
     central.innerHTML = frames;
     sunny.draw()
-    sunny.pos.x -= .5
+    sctx.fillStyle = "rgba(" + imgdata + ")"
+    sctx.fillRect(50, 50, 50, 50)
   
     //THIS CAN MAKE RAYS IF YOU REPLACE THE SUNNY X?Y AND MOOVE THE FILL TO DATA COLCT
-    let y = 200
-    while (y >= 5) {
-      ctx.translate(sunny.pos.x, sunny.pos.y);
-      ctx.rotate((frames * Math.PI) / 180);
-      ctx.fillStyle = "black"
-      ctx.fillRect(0, y, 1, 1)
-      ctx.translate(sunny.pos.x *= -1, sunny.pos.y *= -1);
-      ctx.setTransform(1, 0, 0, 1, 0, 0);
-      y--
-    }
+    ctx.translate(sunny.pos.x, sunny.pos.y);
   }
-  
-  
   
   // ***************************************************************
   document.onkeydown = keypress;
