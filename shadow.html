@@ -71,7 +71,7 @@
   const stageCon = document.getElementById("stageCons");
   const stage = document.getElementById("stage");
   const sctx = stage.getContext("2d");
-  var test = 0;
+ 
   var rays = [];
   class theSun {
     constructor(pos, Z, view) {
@@ -80,8 +80,8 @@
       this.view = view
     }
     draw() {
-      castCon.innerHTML = test
-      test++
+      
+    
       ctx.fillStyle = "rgba(255, 58, 60, 1)";
       ctx.strokeStyle = "rgba(255, 58, 60, 1)";
       ctx.beginPath();
@@ -103,34 +103,32 @@
     frames+=1
     ctx.clearRect(0, 0, caster.width, caster.height)
     ctx.fillStyle = "#789"
-    ctx.fillRect(-1, -1, 150, 175)
+    ctx.fillRect(250, 250, 120, 120)
     central.innerHTML = frames;
         sunny.draw()
-    sctx.fillStyle = "red"
-    sctx.fillRect(50, 50, 50, 50)
-    sctx.fillStyle = "rgba("+imgdata +")"
-  
-   
-  
-  sctx.fillRect(50,50,70,70)
+      sctx.fillStyle = "red"
+    sctx.fillRect(0, 0, 50, 50)
+  sctx.fillStyle = stageCon.innerHTML
+      sctx.fillRect(50,50,70,70)
 
     //THIS CAN MAKE RAYS IF YOU REPLACE THE SUNNY X?Y AND MOOVE THE FILL TO DATA COLCT
-    let y = sunny.size
-      while (150 >= y) {
-  
-        ctx.translate(sunny.pos.x, sunny.pos.y);
-        ctx.rotate((frames * Math.PI) / 180);
-        ctx.fillStyle = "black"
-        ctx.fillRect(0, y, 1, 1)
-        var imgdata = ctx.getImageData(0, y, 1, 1, { colorSpace: "srgb" }).data.toString()
-        stageCon.innerHTML = "rgba("+imgdata +")"
-        ctx.fillStyle = "black"
-        ctx.fillRect(0, y, 1, 1) 
-        ctx.setTransform(1, 0, 0, 1, 0, 0);
+
+  for (let i = 0; i < 100; i+=5) {
+    let it = sunny.size
+    let directX =Xratio(sunny.pos.x,sunny.pos.y,mouseX,mouseY);
+    let directY =Yratio(sunny.pos.x,sunny.pos.y,mouseX,mouseY);
+        while (150 >= it) {
         
-        y++
-      }
+          var imgdata = ctx.getImageData(sunny.pos.x+ it*directX, sunny.pos.y+ (it*directY), 1, 1, { colorSpace: "srgb" }).data.toString()
+          stageCon.innerHTML = "rgba("+imgdata +")"
+          ctx.fillStyle = "black"
+          ctx.fillRect(sunny.pos.x+ (it*directX), sunny.pos.y+ (it*directY), 1, 1) 
+         it+=5
+        }
+  }
       //
+      central.innerHTML = " x is " + Xratio(sunny.pos.x,sunny.pos.y,mouseX,mouseY) + " y is " + Yratio(sunny.pos.x,sunny.pos.y,mouseX,mouseY)+" adding them to "+ (Math.abs(Xratio(sunny.pos.x,sunny.pos.y,mouseX,mouseY)) + Math.abs(Yratio(sunny.pos.x,sunny.pos.y,mouseX,mouseY)));
+
   }
   
   // ***************************************************************
@@ -160,13 +158,13 @@
     mouseY = Event.clientY - Event.currentTarget.offsetTop;
     if (event.clientX <= 650) {
       mouseFoc = "caster"
-      castCon.innerHTML = " x is " + mouseX + " y is " + mouseY
+     // castCon.innerHTML = " x is " + mouseX + " y is " + mouseY
     } else {
       mouseFoc = "stage"
-      stageCon.innerHTML = " x is " + mouseX + " y is " + mouseY
+    //  stageCon.innerHTML = " x is " + mouseX + " y is " + mouseY
     }
 
-    //my falesafe functines 
+ //********************UTILITY FUNCTIONS********************
   }
   function Xratio(x1, y1, x2, y2) {
 	return (x2 - x1) / getDistance(x1, y1, x2, y2)
@@ -179,9 +177,7 @@
 	let x = y2 - y1;
 	return Math.sqrt(x * x + y * y);
   }
- function getRand(low,high) {
-	return Math.floor((Math.random()* (high-low))+low)
- }  
+
   </script>
 </body>
 </html>
