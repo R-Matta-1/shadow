@@ -71,30 +71,37 @@
   const stageCon = document.getElementById("stageCons");
   const stage = document.getElementById("stage");
   const sctx = stage.getContext("2d");
- 
   var rays = [];
+
+  class ray{
+ constructor(id,value,length){
+this.id = id
+this.value = value
+this.length = length
+}
+newval(){
+  return value
+}
+  }
   class theSun {
-    constructor(pos, Z, view) {
+    constructor(pos, size, view,color) {
       this.pos = pos
-      this.size = Z;
+      this.size = size;
       this.view = view
+      this.color = color
     }
-    draw() {
-      
-    
-      ctx.fillStyle = "rgba(255, 58, 60, 1)";
-      ctx.strokeStyle = "rgba(255, 58, 60, 1)";
+    draw() {    
+      ctx.fillStyle = this.color;
+      ctx.strokeStyle = this.color;
       ctx.beginPath();
       ctx.arc(this.pos.x, this.pos.y, this.size, 0 * Math.PI, 2 * Math.PI);
       ctx.fill();
       ctx.stroke();
 
-//raymaker*****************************************************************
-
     }
   }
   
-  var sunny = new theSun(new position(200, 200), 35, 0);
+  var sunny = new theSun(new position(200, 200), 25, 0,"rgba(255, 58, 60, 1)");
   
   
   var frames = 0
@@ -106,15 +113,12 @@
     ctx.fillRect(250, 250, 120, 120)
     central.innerHTML = frames;
         sunny.draw()
-      sctx.fillStyle = "red"
-    sctx.fillRect(0, 0, 50, 50)
-  sctx.fillStyle = stageCon.innerHTML
-      sctx.fillRect(50,50,70,70)
 
-    //THIS CAN MAKE RAYS IF YOU REPLACE THE SUNNY X?Y AND MOOVE THE FILL TO DATA COLCT
 
-  for (let i = 0; i < 100; i+=5) {
-    let it = sunny.size
+    //THIS CAN MAKE RAYS IF YOU REPLACE THE SUNNY   X?Y AND MOOVE THE FILL TO DATA COLCT
+
+ //for (let i = 0; i < 100; i+=1) {
+    let it = sunny.size+2
     let directX =Xratio(sunny.pos.x,sunny.pos.y,mouseX,mouseY);
     let directY =Yratio(sunny.pos.x,sunny.pos.y,mouseX,mouseY);
         while (150 >= it) {
@@ -123,33 +127,49 @@
           stageCon.innerHTML = "rgba("+imgdata +")"
           ctx.fillStyle = "black"
           ctx.fillRect(sunny.pos.x+ (it*directX), sunny.pos.y+ (it*directY), 1, 1) 
-         it+=5
+         it+=3
+         //colors listed bolow are effected by the img.data, these will decide movment of the loop
+         if (imgdata != "0,0,0,0"   ) {
+          break}
+       
         }
-  }
+// }
       //
-      central.innerHTML = " x is " + Xratio(sunny.pos.x,sunny.pos.y,mouseX,mouseY) + " y is " + Yratio(sunny.pos.x,sunny.pos.y,mouseX,mouseY)+" adding them to "+ (Math.abs(Xratio(sunny.pos.x,sunny.pos.y,mouseX,mouseY)) + Math.abs(Yratio(sunny.pos.x,sunny.pos.y,mouseX,mouseY)));
+      central.innerHTML = " x = " + Xratio(sunny.pos.x,sunny.pos.y,mouseX,mouseY) + " y = " + Yratio(sunny.pos.x,sunny.pos.y,mouseX,mouseY)+" total change = "+ (Math.abs(Xratio(sunny.pos.x,sunny.pos.y,mouseX,mouseY)) + Math.abs(Yratio(sunny.pos.x,sunny.pos.y,mouseX,mouseY)));
 
   }
+  function stageLoad() {
+    sctx.clearRect(0, 0, caster.width, caster.height)
   
+  sctx.fillStyle = stageCon.innerHTML
+      sctx.fillRect(50,50,70,70)
+  }
   // ***************************************************************
   document.onkeydown = keypress;
   
   function keypress(event) {
     central.innerHTML = event.code
     switch (event.code) {
-      case "Space":
-        setInterval(gameLoad, 1000 / 25);
-        break;
-      case "ArrowRight":
-  
-        break;
-      case "ArrowLeft":
-  
-        break;
-  
-      default:
-        break;
-    }
+	case "Space":
+		setInterval(gameLoad, 1000 / 25);
+		setInterval(stageLoad, 1000 / 25);
+		break;
+	case "ArrowRight":
+		sunny.pos.x +=5
+		break;
+	case "ArrowUp":
+  sunny.pos.y -=5
+		break;
+	case "ArrowLeft":
+  sunny.pos.x -=5
+		break;
+	case "ArrowDown":
+  sunny.pos.y +=5
+		break;
+
+	default:
+		break;
+}
   }
   var mouseFoc = null;
   
@@ -158,14 +178,11 @@
     mouseY = Event.clientY - Event.currentTarget.offsetTop;
     if (event.clientX <= 650) {
       mouseFoc = "caster"
-     // castCon.innerHTML = " x is " + mouseX + " y is " + mouseY
     } else {
       mouseFoc = "stage"
-    //  stageCon.innerHTML = " x is " + mouseX + " y is " + mouseY
-    }
+    }}
 
  //********************UTILITY FUNCTIONS********************
-  }
   function Xratio(x1, y1, x2, y2) {
 	return (x2 - x1) / getDistance(x1, y1, x2, y2)
   }
