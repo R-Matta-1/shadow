@@ -117,24 +117,24 @@ newval(){
 
     //THIS CAN MAKE RAYS IF YOU REPLACE THE SUNNY   X?Y AND MOOVE THE FILL TO DATA COLCT
 
- //for (let i = 0; i < 100; i+=1) {
+for (let i = 0; i < 100; i+=1) {
     let it = sunny.size+2
-    let directX =Xratio(sunny.pos.x,sunny.pos.y,mouseX,mouseY);
-    let directY =Yratio(sunny.pos.x,sunny.pos.y,mouseX,mouseY);
+    let directX = Xratio(sunny.pos.x, sunny.pos.y, mouseX, mouseY);
+    let directY = Yratio(sunny.pos.x, sunny.pos.y, mouseX, mouseY);
+    let leftX = Yratio(sunny.pos.x, sunny.pos.y, mouseX, mouseY)*-1 ;
+    let leftY = Xratio(sunny.pos.x, sunny.pos.y, mouseX, mouseY) ;
         while (150 >= it) {
-        
-          var imgdata = ctx.getImageData(sunny.pos.x+ it*directX, sunny.pos.y+ (it*directY), 1, 1, { colorSpace: "srgb" }).data.toString()
+      let startX = sunny.pos.x ;
+      let startY = sunny.pos.y;
+          var imgdata = ctx.getImageData(startX+ it*directX, sunny.pos.y+ (it*directY), 1, 1, { colorSpace: "srgb" }).data.toString()
+       
           stageCon.innerHTML = "rgba("+imgdata +")"
           ctx.fillStyle = "black"
-          ctx.fillRect(sunny.pos.x+ (it*directX), sunny.pos.y+ (it*directY), 1, 1) 
-         it+=3
-         //colors listed bolow are effected by the img.data, these will decide movment of the loop
-         if (imgdata != "0,0,0,0"   ) {
-          break}
-       
-        }
-// }
-      //
+          ctx.fillRect((startX+i)+ (it*directX)+i, (sunny.pos.y+i)+ (it*directY)+i, 1, 1) 
+          it += 3
+      //done
+     // if (imgdata != "0,0,0,0") {if (imgdata != "255, 58, 60, 255"){break}}
+} }
       central.innerHTML = " x = " + Xratio(sunny.pos.x,sunny.pos.y,mouseX,mouseY) + " y = " + Yratio(sunny.pos.x,sunny.pos.y,mouseX,mouseY)+" total change = "+ (Math.abs(Xratio(sunny.pos.x,sunny.pos.y,mouseX,mouseY)) + Math.abs(Yratio(sunny.pos.x,sunny.pos.y,mouseX,mouseY)));
 
   }
