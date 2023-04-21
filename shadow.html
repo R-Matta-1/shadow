@@ -58,7 +58,8 @@
 <div class="cons"; id="central">websitr dosnt laod corctly</div>
 <div class="cons"; id="stageCons">mw when the </div>
 
-   <script>class position {
+<script>
+   class position {
     constructor(x, y) {
       this.x = x
       this.y = y
@@ -72,15 +73,15 @@
   const stage = document.getElementById("stage");
   const sctx = stage.getContext("2d");
   var rays = [];
-
+rays.length = 50;
   class ray{
  constructor(id,value,length){
 this.id = id
 this.value = value
 this.length = length
 }
-newval(){
-  return value
+rgb(){
+  return "rgba("+this.value+")"
 }
   }
   class theSun {
@@ -112,36 +113,44 @@ newval(){
     ctx.fillStyle = "#789"
     ctx.fillRect(250, 250, 120, 120)
     central.innerHTML = frames;
-        sunny.draw()
+        
 
 
     //THIS CAN MAKE RAYS IF YOU REPLACE THE SUNNY   X?Y AND MOOVE THE FILL TO DATA COLCT
-
-for (let i = 0; i < 100; i+=1) {
-    let it = sunny.size+2
+for (let i = sunny.size*-1; i < sunny.size; i+=2) {
     let directX = Xratio(sunny.pos.x, sunny.pos.y, mouseX, mouseY);
     let directY = Yratio(sunny.pos.x, sunny.pos.y, mouseX, mouseY);
     let leftX = Yratio(sunny.pos.x, sunny.pos.y, mouseX, mouseY)*-1 ;
     let leftY = Xratio(sunny.pos.x, sunny.pos.y, mouseX, mouseY) ;
+    let it = 0
         while (150 >= it) {
-      let startX = sunny.pos.x ;
-      let startY = sunny.pos.y;
+      let startX = sunny.pos.x+(i*leftX) ;
+      let startY = sunny.pos.y+(i*leftY);
           var imgdata = ctx.getImageData(startX+ (it*directX), startY+ (it*directY), 1, 1, { colorSpace: "srgb" }).data.toString()
        
-          stageCon.innerHTML = "rgba("+imgdata +")"
+          stageCon.innerHTML = rays.length
           ctx.fillStyle = "black"
-          ctx.fillRect(startX+ (it*directX), startY+ (it*directY), 1, 1,) 
+         ctx.fillRect(startX+ (it*directX), startY+ (it*directY), 1, 1,) 
           it += 3
       //done
-     // if (imgdata != "0,0,0,0") {if (imgdata != "255, 58, 60, 255"){break}}
-} }
+     if (imgdata != "0,0,0,0") { break}
+     }
+     //after the while loop ends iether through break or of length it gets sorted here
+     rays.shift()
+  rays.push(new ray(i,imgdata,it))
+      
+  /*FOR LOOP*/}
+sunny.draw()
       central.innerHTML = " x = " + Math.floor(Xratio(sunny.pos.x,sunny.pos.y,mouseX,mouseY*100) )+ " y = " + Math.floor(Yratio(sunny.pos.x,sunny.pos.y,mouseX,mouseY)*100)+" total change = "+ (Math.abs(Xratio(sunny.pos.x,sunny.pos.y,mouseX,mouseY)) + Math.abs(Yratio(sunny.pos.x,sunny.pos.y,mouseX,mouseY)));
-
   }
   function stageLoad() {
     sctx.clearRect(0, 0, caster.width, caster.height)
   
-  sctx.fillStyle = stageCon.innerHTML
+    for (let i = 0; i < rays.length; i++) {
+      let curnt = rays[i];
+      
+    }
+  sctx.fillStyle = rays[5].rgb()
       sctx.fillRect(50,50,70,70)
   }
   // ***************************************************************
