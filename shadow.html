@@ -126,16 +126,16 @@ for (let i = 0; i < 100; i+=1) {
         while (150 >= it) {
       let startX = sunny.pos.x ;
       let startY = sunny.pos.y;
-          var imgdata = ctx.getImageData(startX+ it*directX, sunny.pos.y+ (it*directY), 1, 1, { colorSpace: "srgb" }).data.toString()
+          var imgdata = ctx.getImageData(startX+ (it*directX), startY+ (it*directY), 1, 1, { colorSpace: "srgb" }).data.toString()
        
           stageCon.innerHTML = "rgba("+imgdata +")"
           ctx.fillStyle = "black"
-          ctx.fillRect((startX+i)+ (it*directX)+i, (sunny.pos.y+i)+ (it*directY)+i, 1, 1) 
+          ctx.fillRect(startX+ (it*directX), startY+ (it*directY), 1, 1,) 
           it += 3
       //done
      // if (imgdata != "0,0,0,0") {if (imgdata != "255, 58, 60, 255"){break}}
 } }
-      central.innerHTML = " x = " + Xratio(sunny.pos.x,sunny.pos.y,mouseX,mouseY) + " y = " + Yratio(sunny.pos.x,sunny.pos.y,mouseX,mouseY)+" total change = "+ (Math.abs(Xratio(sunny.pos.x,sunny.pos.y,mouseX,mouseY)) + Math.abs(Yratio(sunny.pos.x,sunny.pos.y,mouseX,mouseY)));
+      central.innerHTML = " x = " + Math.floor(Xratio(sunny.pos.x,sunny.pos.y,mouseX,mouseY*100) )+ " y = " + Math.floor(Yratio(sunny.pos.x,sunny.pos.y,mouseX,mouseY)*100)+" total change = "+ (Math.abs(Xratio(sunny.pos.x,sunny.pos.y,mouseX,mouseY)) + Math.abs(Yratio(sunny.pos.x,sunny.pos.y,mouseX,mouseY)));
 
   }
   function stageLoad() {
