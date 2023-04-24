@@ -8,48 +8,51 @@
 </head>
 <body>
    <style>
-#caster{
-    height: 400.5px;
-    width: 400.5px;
-    border: hsl(0, 0%, 0%) 5px outset;
+#caster {
+  height: 400.5px;
+  width: 400.5px;
+  border: hsl(0, 0%, 0%) 5px outset;
   top: 50px;
-    transform: translate(50%,0);
-    position: absolute;
+  transform: translate(50%, 0);
+  position: absolute;
   top: 15%;
   left: 30px;
+}
 
-   }
-   .canvas{
-    height: 400.5px;
-    width: 400.5px;
-    border: hsl(0, 0%, 0%) 5px outset;
+.canvas {
+  height: 400.5px;
+  width: 400.5px;
+  border: hsl(0, 0%, 0%) 5px outset;
   top: 50px;
-    transform: translate(50%,0);
-    position: absolute;
-  
-   }
-   #stage{
+  transform: translate(50%, 0);
+  position: absolute;
+}
+
+#stage {
   top: 15%;
   left: 460px;
-   }
-.cons{
-    font: 1.4em monospace;
-   align-items: center;
-   position: absolute;
 }
-#castCons{
- top: 50px;
-   left: 300px;
+
+.cons {
+  font: 1.4em monospace;
+  align-items: center;
+  position: absolute;
 }
-#central{
-    top: 500px;
-    left: 540px;
+
+#castCons {
+  top: 50px;
+  left: 300px;
 }
-#stageCons{
-    top: 50px;
-    left: 800px;
+
+#central {
+  top: 500px;
+  left: 540px;
 }
-   </style>
+
+#stageCons {
+  top: 50px;
+  left: 800px;}
+  </style>
 
 <canvas class="canvas" id="caster"; height = 400.5 ; width = 400.5 ; onmousemove="bingo(event)" >lmao wrnog browsr</canvas>
 <canvas class="canvas" id="stage"; height = 400.5 ; width = 400.5 ; onmousemove="bingo(event)">lmao wrnog browsr</canvas>
@@ -58,153 +61,150 @@
 <div class="cons"; id="central">websitr dosnt laod corctly</div>
 <div class="cons"; id="stageCons">mw when the </div>
 
-<script>
-   class position {
-    constructor(x, y) {
-      this.x = x
-      this.y = y
-    }
+<script>class position {
+  constructor(x, y) {
+    this.x = x
+    this.y = y
   }
-  const pixlRate = 1
-  const caster = document.getElementById("caster");
-  const ctx = caster.getContext("2d");
-  const castCon = document.getElementById("castCons");
-  const central = document.getElementById("central");
-  const stageCon = document.getElementById("stageCons");
-  const stage = document.getElementById("stage");
-  const sctx = stage.getContext("2d");
-  var rays = [];
-
-  class ray{
- constructor(id,value,length){
-this.id = id
-this.value = value
-this.length = length
 }
-rgb(){
-  return "rgba("+this.value+")"
+const pixlRate = 1
+const caster = document.getElementById("caster");
+const ctx = caster.getContext("2d");
+const castCon = document.getElementById("castCons");
+const central = document.getElementById("central");
+const stageCon = document.getElementById("stageCons");
+const stage = document.getElementById("stage");
+const sctx = stage.getContext("2d");
+var rays = [];
+class ray {
+  constructor(id, value, length) {
+    this.id = id
+    this.value = value
+    this.length = length
+  }
+  rgb() {
+    return "rgba(" + this.value + ")"
+  }
 }
+class theSun {
+  constructor(pos, size, view, color) {
+    this.pos = pos
+    this.size = size;
+    this.view = view
+    this.color = color
   }
-  class theSun {
-    constructor(pos, size, view,color) {
-      this.pos = pos
-      this.size = size;
-      this.view = view
-      this.color = color
-    }
-    draw() {    
-      ctx.fillStyle = this.color;
-      ctx.strokeStyle = this.color;
-      ctx.beginPath();
-      ctx.arc(this.pos.x, this.pos.y, this.size, 0 * Math.PI, 2 * Math.PI);
-      ctx.fill();
-      ctx.stroke();
-
-    }
+  draw() {
+    ctx.fillStyle = this.color;
+    ctx.strokeStyle = this.color;
+    ctx.beginPath();
+    ctx.arc(this.pos.x, this.pos.y, this.size, 0 * Math.PI, 2 * Math
+      .PI);
+    ctx.fill();
+    ctx.stroke();
   }
-  
-  var sunny = new theSun(new position(200, 200), 25, 0,"rgba(255, 58, 60, 1)");
-  
-  
-  var frames = 0
-  
-  function gameLoad() {
-    frames+=1
-    ctx.clearRect(0, 0, caster.width, caster.height)
-    ctx.fillStyle = "#789"
-    ctx.fillRect(250, 250, 120, 120)
-    central.innerHTML = frames;
-        
+}
+var sunny = new theSun(new position(200, 200), 25, 0,
+  "rgba(255, 58, 60, 1)");
+var frames = 0
 
-
-    //THIS CAN MAKE RAYS IF YOU REPLACE THE SUNNY   X?Y AND MOOVE THE FILL TO DATA COLCT
-for (let i = sunny.size*-1; i < sunny.size; i+=pixlRate) {
+function gameLoad() {
+  frames += 1
+  ctx.clearRect(0, 0, caster.width, caster.height)
+  ctx.fillStyle = "#789"
+  ctx.fillRect(250, 250, 120, 120)
+  central.innerHTML = frames;
+  //THIS CAN MAKE RAYS IF YOU REPLACE THE SUNNY   X?Y AND MOOVE THE FILL TO DATA COLCT
+  for(let i = sunny.size * -1; i < sunny.size; i += pixlRate) {
     let directX = Xratio(sunny.pos.x, sunny.pos.y, mouseX, mouseY);
     let directY = Yratio(sunny.pos.x, sunny.pos.y, mouseX, mouseY);
-    let leftX = Yratio(sunny.pos.x, sunny.pos.y, mouseX, mouseY)*-1 ;
-    let leftY = Xratio(sunny.pos.x, sunny.pos.y, mouseX, mouseY) ;
+    let leftX = Yratio(sunny.pos.x, sunny.pos.y, mouseX, mouseY) * -1;
+    let leftY = Xratio(sunny.pos.x, sunny.pos.y, mouseX, mouseY);
     let it = 0
-        while (150 >= it) {
-      let startX = sunny.pos.x+(i*leftX) ;
-      let startY = sunny.pos.y+(i*leftY);
-          var imgdata = ctx.getImageData(startX+ (it*directX), startY+ (it*directY), 1, 1, { colorSpace: "srgb" }).data.toString()
-       
-          stageCon.innerHTML = rays.length
-          ctx.fillStyle = "#223344"
-          //to later be used as a post-scan loaded debuging tool as to not interact with the data colection
-ctx.fillRect(startX+ (it*directX), startY+ (it*directY), 1, 1,) 
-          it += 3
+    while(150 >= it) {
+      let startX = sunny.pos.x + (i * leftX);
+      let startY = sunny.pos.y + (i * leftY);
+      var imgdata = ctx.getImageData(startX + (it * directX), startY +(it * directY), 1, 1, { colorSpace: "srgb" }).data.toString()
+      stageCon.innerHTML = rays.length+"it shouild be"+(sunny.size*2)
+      ctx.fillStyle = "#223344"
+      //to later be used as a post-scan loaded debuging tool as to not interact with the data colection
+      ctx.fillRect(startX + (it * directX), startY + (it * directY),
+        1, 1, )
+      it += 3
       //done
-     if (imgdata != "0,0,0,0") {if (imgdata != "0,0,0,255"){break}}
-     }
-     rays.length = sunny.size*2/pixlRate;
-     //after the while loop ends iether through break or of length it gets sorted here
-     rays.shift()
-  rays.push(new ray(i,imgdata,it))
-      
-  /*FOR LOOP*/}
-sunny.draw()
-      central.innerHTML = " x = " + Math.floor(Xratio(sunny.pos.x,sunny.pos.y,mouseX,mouseY*100) )+ " y = " + Math.floor(Yratio(sunny.pos.x,sunny.pos.y,mouseX,mouseY)*100)+" total change = "+ (Math.abs(Xratio(sunny.pos.x,sunny.pos.y,mouseX,mouseY)) + Math.abs(Yratio(sunny.pos.x,sunny.pos.y,mouseX,mouseY)));
-  }
-  function stageLoad() {
-    sctx.clearRect(0, 0, caster.width, caster.height)
-  //asdfghjkl dont ask, noooooo fukn clu wjats going on here
-    for (let i = 0; i < rays.length; i++) {
-      sctx.fillStyle = rays[i].rgb()
-      sctx.fillRect(i*(400/rays.length),0,400/rays.length,400)
+      if(imgdata != "0,0,0,0") {
+        if(imgdata != "0,0,0,255") { break }}
     }
- 
-  }
-  // ***************************************************************
-  document.onkeydown = keypress;
-  
-  function keypress(event) {
-    central.innerHTML = event.code
-    switch (event.code) {
-	case "Space":
-		setInterval(gameLoad, 1000 / 25);
-		setInterval(stageLoad, 1000 / 25);
-		break;
-	case "ArrowRight":
-		sunny.pos.x +=5
-		break;
-	case "ArrowUp":
-  sunny.pos.y -=5
-		break;
-	case "ArrowLeft":
-  sunny.pos.x -=5
-		break;
-	case "ArrowDown":
-  sunny.pos.y +=5
-		break;
-
-	default:
-		break;
+    rays.length = sunny.size * 2 / pixlRate;
+    //after the while loop ends iether through break or of length it gets sorted here
+    rays.shift()
+    rays.push(new ray(i, imgdata, it))
+    /*FOR LOOP*/}
+  sunny.draw()
+  //??
+  central.innerHTML = " x = " + Math.floor(Xratio(sunny.pos.x, sunny
+      .pos.y, mouseX, mouseY * 100)) + 
+    " y = " + Math.floor(Yratio(
+      sunny.pos.x, sunny.pos.y, mouseX, mouseY) * 100) +
+    " total change = " + (Math.abs(Xratio(sunny.pos.x, sunny.pos.y,
+      mouseX, mouseY)) + Math.abs(Yratio(sunny.pos.x, sunny.pos.y,
+      mouseX, mouseY)));
+  //what thefuck is going on up thier??
 }
-  }
-  var mouseFoc = null; 
-  
-  function bingo(Event) {
-    mouseX = Event.clientX - Event.currentTarget.offsetLeft - 200;
-    mouseY = Event.clientY - Event.currentTarget.offsetTop;
-    if (event.clientX <= 650) {
-      mouseFoc = "caster"
-    } else {
-      mouseFoc = "stage"
-    }}
 
- //********************UTILITY FUNCTIONS********************
-  function Xratio(x1, y1, x2, y2) {
-	return (x2 - x1) / getDistance(x1, y1, x2, y2)
+function stageLoad() {
+  sctx.clearRect(0, 0, caster.width, caster.height)
+  //asdfghjkl dont ask, noooooo fukn clu wjats going on here
+  for(let i = 0; i < rays.length; i++) {
+    sctx.fillStyle = rays[i].rgb()
+    sctx.fillRect(i * (400 / rays.length), 0, 400 / rays.length, 400)
   }
-  function Yratio(x1, y1, x2, y2) {
-	return (y2 - y1) / getDistance(x1, y1, x2, y2)
+}
+// ***************************************************************
+document.onkeydown = keypress;
+
+function keypress(event) {
+  central.innerHTML = event.code
+  switch(event.code) {
+    case "Space":
+      setInterval(gameLoad, 1000 / 25);
+      setInterval(stageLoad, 1000 / 25);
+      break;
+    case "ArrowRight":
+      sunny.pos.x += 5
+      break;
+    case "ArrowUp":
+      sunny.pos.y -= 5
+      break;
+    case "ArrowLeft":
+      sunny.pos.x -= 5
+      break;
+    case "ArrowDown":
+      sunny.pos.y += 5
+      break;
+    default:
+      break;
   }
-  function getDistance(x1, y1, x2, y2) {
-	let y = x2 - x1;
-	let x = y2 - y1;
-	return Math.sqrt(x * x + y * y);
+}
+var mouseFoc = null;
+
+function bingo(Event) {
+  mouseX = Event.clientX - Event.currentTarget.offsetLeft - 200;
+  mouseY = Event.clientY - Event.currentTarget.offsetTop;
+  if(event.clientX <= 650) {
+    mouseFoc = "caster"
+  } else {
+    mouseFoc = "stage"
   }
+}
+//********************UTILITY FUNCTIONS********************
+function Xratio(x1, y1, x2, y2) {
+  return (x2 - x1) / getDistance(x1, y1, x2, y2)}
+function Yratio(x1, y1, x2, y2) {
+  return (y2 - y1) / getDistance(x1, y1, x2, y2)}
+function getDistance(x1, y1, x2, y2) {
+  let y = x2 - x1;
+  let x = y2 - y1;
+  return Math.sqrt(x * x + y * y);}
 
   </script>
 </body>
