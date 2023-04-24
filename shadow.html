@@ -65,6 +65,7 @@
       this.y = y
     }
   }
+  const pixlRate = 1
   const caster = document.getElementById("caster");
   const ctx = caster.getContext("2d");
   const castCon = document.getElementById("castCons");
@@ -73,7 +74,7 @@
   const stage = document.getElementById("stage");
   const sctx = stage.getContext("2d");
   var rays = [];
-rays.length = 50;
+
   class ray{
  constructor(id,value,length){
 this.id = id
@@ -117,7 +118,7 @@ rgb(){
 
 
     //THIS CAN MAKE RAYS IF YOU REPLACE THE SUNNY   X?Y AND MOOVE THE FILL TO DATA COLCT
-for (let i = sunny.size*-1; i < sunny.size; i+=2) {
+for (let i = sunny.size*-1; i < sunny.size; i+=pixlRate) {
     let directX = Xratio(sunny.pos.x, sunny.pos.y, mouseX, mouseY);
     let directY = Yratio(sunny.pos.x, sunny.pos.y, mouseX, mouseY);
     let leftX = Yratio(sunny.pos.x, sunny.pos.y, mouseX, mouseY)*-1 ;
@@ -129,12 +130,14 @@ for (let i = sunny.size*-1; i < sunny.size; i+=2) {
           var imgdata = ctx.getImageData(startX+ (it*directX), startY+ (it*directY), 1, 1, { colorSpace: "srgb" }).data.toString()
        
           stageCon.innerHTML = rays.length
-          ctx.fillStyle = "black"
-         ctx.fillRect(startX+ (it*directX), startY+ (it*directY), 1, 1,) 
+          ctx.fillStyle = "#223344"
+          //to later be used as a post-scan loaded debuging tool as to not interact with the data colection
+ctx.fillRect(startX+ (it*directX), startY+ (it*directY), 1, 1,) 
           it += 3
       //done
-     if (imgdata != "0,0,0,0") { break}
+     if (imgdata != "0,0,0,0") {if (imgdata != "0,0,0,255"){break}}
      }
+     rays.length = sunny.size*2/pixlRate;
      //after the while loop ends iether through break or of length it gets sorted here
      rays.shift()
   rays.push(new ray(i,imgdata,it))
@@ -145,13 +148,12 @@ sunny.draw()
   }
   function stageLoad() {
     sctx.clearRect(0, 0, caster.width, caster.height)
-  
+  //asdfghjkl dont ask, noooooo fukn clu wjats going on here
     for (let i = 0; i < rays.length; i++) {
-      let curnt = rays[i];
-      
+      sctx.fillStyle = rays[i].rgb()
+      sctx.fillRect(i*(400/rays.length),0,400/rays.length,400)
     }
-  sctx.fillStyle = rays[5].rgb()
-      sctx.fillRect(50,50,70,70)
+ 
   }
   // ***************************************************************
   document.onkeydown = keypress;
@@ -180,7 +182,7 @@ sunny.draw()
 		break;
 }
   }
-  var mouseFoc = null;
+  var mouseFoc = null; 
   
   function bingo(Event) {
     mouseX = Event.clientX - Event.currentTarget.offsetLeft - 200;
