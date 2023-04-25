@@ -67,7 +67,11 @@
     this.y = y
   }
 }
+const roofColor= "#AA79B9";
+const floorColor= "#011638";
+const renderdist = 250
 const pixlRate = 1
+const addedView = 20
 const caster = document.getElementById("caster");
 const ctx = caster.getContext("2d");
 const castCon = document.getElementById("castCons");
@@ -80,18 +84,17 @@ class ray {
   constructor(id, value, length) {
     this.id = id
     this.value = value
-    this.length = length
-  }
-  rgb() {
-    return "rgba(" + this.value + ")"
+    this.length = Math.abs(length-renderdist);
+    this.rgb = "rgba(" + this.value + ")"
   }
 }
 class theSun {
-  constructor(pos, size, view, color) {
+  constructor(pos, size, view, color,speed) {
     this.pos = pos
     this.size = size;
     this.view = view
     this.color = color
+    this.speed = speed
   }
   draw() {
     ctx.fillStyle = this.color;
@@ -104,42 +107,54 @@ class theSun {
   }
 }
 var sunny = new theSun(new position(200, 200), 25, 0,
-  "rgba(255, 58, 60, 1)");
+  "rgba(255, 58, 60, .5)",15);
 var frames = 0
 
 function gameLoad() {
   frames += 1
   ctx.clearRect(0, 0, caster.width, caster.height)
-  ctx.fillStyle = "#789"
-  ctx.fillRect(250, 250, 120, 120)
+  //THIS IS THE DRAW ZONE; things placed here will have rays casted apon them
+  ctx.fillStyle = "crimson"
+  ctx.fillRect(250, 250, 60, 60)
   central.innerHTML = frames;
-  //THIS CAN MAKE RAYS IF YOU REPLACE THE SUNNY   X?Y AND MOOVE THE FILL TO DATA COLCT
-  for(let i = sunny.size * -1; i < sunny.size; i += pixlRate) {
+
+  /*here we need to track the wmount of rays made automaticly becasue... 
+  well because fuck you thats why we willl to this wuth the following ray Ammount varubl*/
+
+  var rayAmount =0 //(Math.abs((sunny.size * -1)-addedView)+ sunny.size+addedView)/pixlRate
+  for(let i = (sunny.size * -1)-addedView; i < sunny.size+addedView; i += pixlRate) {
+    rayAmount++
     let directX = Xratio(sunny.pos.x, sunny.pos.y, mouseX, mouseY);
     let directY = Yratio(sunny.pos.x, sunny.pos.y, mouseX, mouseY);
     let leftX = Yratio(sunny.pos.x, sunny.pos.y, mouseX, mouseY) * -1;
     let leftY = Xratio(sunny.pos.x, sunny.pos.y, mouseX, mouseY);
     let it = 0
-    while(150 >= it) {
+    while(renderdist >= it) {
       let startX = sunny.pos.x + (i * leftX);
       let startY = sunny.pos.y + (i * leftY);
       var imgdata = ctx.getImageData(startX + (it * directX), startY +(it * directY), 1, 1, { colorSpace: "srgb" }).data.toString()
-      stageCon.innerHTML = rays.length+"it shouild be"+(sunny.size*2)
-      ctx.fillStyle = "#223344"
+      
+      ctx.fillStyle = "black"
       //to later be used as a post-scan loaded debuging tool as to not interact with the data colection
-      ctx.fillRect(startX + (it * directX), startY + (it * directY),
-        1, 1, )
+     // ctx.fillStyle = "#040"
+      //ctx.fillRect(startX + (it * directX), startY + (it * directY),1, 1, )
       it += 3
       //done
       if(imgdata != "0,0,0,0") {
         if(imgdata != "0,0,0,255") { break }}
     }
-    rays.length = sunny.size * 2 / pixlRate;
+    rays.length = Math.abs((sunny.size * -1)-addedView) + sunny.size+addedView / pixlRate;
     //after the while loop ends iether through break or of length it gets sorted here
     rays.shift()
     rays.push(new ray(i, imgdata, it))
     /*FOR LOOP*/}
   sunny.draw()
+  ctx.fillStyle = "black"
+  ctx.beginPath();
+ctx.moveTo(sunny.pos.x, sunny.pos.y);
+ctx.lineTo(mouseX, mouseY);
+ctx.stroke();
+castCon.innerHTML =  rays.length+" and it should be "+rayAmount
   //??
   central.innerHTML = " x = " + Math.floor(Xratio(sunny.pos.x, sunny
       .pos.y, mouseX, mouseY * 100)) + 
@@ -148,16 +163,21 @@ function gameLoad() {
     " total change = " + (Math.abs(Xratio(sunny.pos.x, sunny.pos.y,
       mouseX, mouseY)) + Math.abs(Yratio(sunny.pos.x, sunny.pos.y,
       mouseX, mouseY)));
-  //what thefuck is going on up thier??
+  //what the f#*@ is going on up thier??
 }
-
+//jesus christ almighty 
 function stageLoad() {
   sctx.clearRect(0, 0, caster.width, caster.height)
   //asdfghjkl dont ask, noooooo fukn clu wjats going on here
   for(let i = 0; i < rays.length; i++) {
-    sctx.fillStyle = rays[i].rgb()
-    sctx.fillRect(i * (400 / rays.length), 0, 400 / rays.length, 400)
-  }
+   let shader = "rgba(0,0,0,"+(map(rays[i].length,0,renderdist,0,100)/100)+")"
+    sctx.fillStyle = rays[i].rgb 
+    sctx.fillRect(i * (400 / rays.length), ( rays[i].length/2)-10, (400 / rays.length)+1, (rays[i].length+(rays[i].length/2))+25)
+    sctx.fillStyle = shader
+     
+    sctx.fillRect(i * (400 / rays.length), ( rays[i].length/2)-10, (400 / rays.length)+1, (rays[i].length+(rays[i].length/2))+25)
+stageCon.innerHTML= shader
+}
 }
 // ***************************************************************
 document.onkeydown = keypress;
@@ -170,16 +190,16 @@ function keypress(event) {
       setInterval(stageLoad, 1000 / 25);
       break;
     case "ArrowRight":
-      sunny.pos.x += 5
+      sunny.pos.x += sunny.speed
       break;
     case "ArrowUp":
-      sunny.pos.y -= 5
+      sunny.pos.y -= sunny.speed
       break;
     case "ArrowLeft":
-      sunny.pos.x -= 5
+      sunny.pos.x -= sunny.speed
       break;
     case "ArrowDown":
-      sunny.pos.y += 5
+      sunny.pos.y += sunny.speed
       break;
     default:
       break;
@@ -199,12 +219,17 @@ function bingo(Event) {
 //********************UTILITY FUNCTIONS********************
 function Xratio(x1, y1, x2, y2) {
   return (x2 - x1) / getDistance(x1, y1, x2, y2)}
+
 function Yratio(x1, y1, x2, y2) {
   return (y2 - y1) / getDistance(x1, y1, x2, y2)}
+
 function getDistance(x1, y1, x2, y2) {
   let y = x2 - x1;
   let x = y2 - y1;
   return Math.sqrt(x * x + y * y);}
+
+  function map( x,inmin,inmax,outmin,outmax) {
+  return (x - inmin) * (outmax - outmin) / (inmax - inmin) + outmin;}
 
   </script>
 </body>
