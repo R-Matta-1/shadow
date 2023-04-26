@@ -65,7 +65,7 @@ const floorColor= "#011638";
 const renderdist = 250
 const pixlRate = 1
 const distRate= 3
-const addedView = 50
+const addedView = 15
 const caster = document.getElementById("caster");
 const ctx = caster.getContext("2d");
 const castCon = document.getElementById("castCons");
@@ -136,7 +136,7 @@ function gameLoad() {
       
       ctx.fillStyle = "black"
       //to later be used as a post-scan loaded debuging tool as to not interact with the data colection
-     ctx.fillRect(startX + (it * directX), startY + (it * directY),1, 1, )
+    // ctx.fillRect(startX + (it * directX), startY + (it * directY),1, 1, )
       it += distRate
       //done
       if(imgdata != "0,0,0,0") {
@@ -169,7 +169,7 @@ function stageLoad() {
   sctx.clearRect(0, 0, caster.width, caster.height)
   //asdfghjkl dont ask, noooooo fukn clu wjats going on here
   for(let i = 0; i < rays.length; i++) {
-   let shader = "rgba(0,0,0,"+Math.abs((map(rays[i].length,0,renderdist,0,100)/100)-.75)+")"
+   let shader = "rgba(0,0,0,"+Math.abs((map(rays[i].length,0,renderdist,0,120)/100)-1)+")"
    let curntXStart = i * (400 / rays.length);
    let curnyXEnd = (400 / rays.length)+1;
    //draw the item
