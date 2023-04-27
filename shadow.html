@@ -37,14 +37,14 @@
 }
 #castCons {
   top: 50px;
-  left: 300px;
+  left: 200px;
 }
 #central {
   top: 500px;
   left: 540px;
 }
 #stageCons {
-  top: 50px;
+  top: 10px;
   left: 800px;}
   </style>
 <canvas class="canvas" id="caster"; height = 400.5 ; width = 400.5 ; onmousemove="bingo(event)" >lmao wrnog browsr</canvas>
@@ -53,6 +53,11 @@
 <div class="cons"; id="castCons">me when </div>
 <div class="cons"; id="central">websitr dosnt laod corctly</div>
 <div class="cons"; id="stageCons">mw when the </div>
+<label id="addedVLable" for="addedV">FOV
+<input type="range" name="addedV" id="addedV" min="-20" max="50" value ="10"></label>
+
+<label id="shadeBuffLable" for="shadeB">shadeBuff
+  <input type="range" name="shadeB" id="shadeB" min="0" max="100" step="1" value =".5"></label>
 
 <script>class position {
   constructor(x, y) {
@@ -60,12 +65,14 @@
     this.y = y
   }
 }
+var debugMode = false
 const roofColor= "#AA79B9";
 const floorColor= "#011638";
 const renderdist = 250
+var shadeBuff = .5
 const pixlRate = 1
-const distRate= 3
-const addedView = 15
+const distRez= 3
+var addedView = 5
 const caster = document.getElementById("caster");
 const ctx = caster.getContext("2d");
 const castCon = document.getElementById("castCons");
@@ -107,6 +114,7 @@ var sunny = new theSun(new position(200, 50), 25, 0,
 var frames = 0
 
 function gameLoad() {
+  
   frames += 1
   ctx.clearRect(0, 0, caster.width, caster.height)
   //THIS IS THE DRAW ZONE; things placed here will have rays casted apon them
@@ -116,7 +124,10 @@ function gameLoad() {
   ctx.fillRect(160, 160, 30, 80)
   ctx.fillStyle = "blue"
   ctx.fillRect(200, 200, 30, 80)
+  ctx.fillStyle = "#777"
+  ctx.fillRect(0, 100, 50, 300)
   central.innerHTML = frames;
+
 
   /*here we need to track the wmount of rays made automaticly becasue... 
   well because fuck you thats why we willl to this wuth the following ray Ammount varubl*/
@@ -136,13 +147,12 @@ function gameLoad() {
       
       ctx.fillStyle = "black"
       //to later be used as a post-scan loaded debuging tool as to not interact with the data colection
-    // ctx.fillRect(startX + (it * directX), startY + (it * directY),1, 1, )
-      it += distRate
+     if(debugMode){ctx.fillRect(startX + (it * directX), startY + (it * directY),1, 1, )}
+      it += distRez
       //done
-      if(imgdata != "0,0,0,0") {
-        if(imgdata != "0,0,0,255") { break }}
+      if(imgdata != "0,0,0,0") { break }
     }
-    rays.length = Math.abs((sunny.size * -1)-addedView) + sunny.size+addedView / pixlRate;
+    rays.length = (Math.abs((sunny.size * -1)-addedView) + sunny.size+addedView) / pixlRate;
     //after the while loop ends iether through break or of length it gets sorted here
     rays.shift()
     rays.push(new ray(i, imgdata, it))
@@ -153,12 +163,12 @@ function gameLoad() {
 ctx.moveTo(sunny.pos.x, sunny.pos.y);
 ctx.lineTo(mouseX, mouseY);
 ctx.stroke();
-castCon.innerHTML =  rays.length+" and it should be "+rayAmount
+castCon.innerHTML =  rays.length+" and it should be "+rayAmount+" and "+ (1 * (400 / rays.length))  +"isthe first 2/400"
   //??
   central.innerHTML = " x = " + Math.floor(Xratio(sunny.pos.x, sunny
       .pos.y, mouseX, mouseY * 100)) + 
     " y = " + Math.floor(Yratio(
-      sunny.pos.x, sunny.pos.y, mouseX, mouseY) * 100) +
+      sunny.pos.x, sunny.pos.y, mouseX, mouseY) * 100) + 
     " total change = " + (Math.abs(Xratio(sunny.pos.x, sunny.pos.y,
       mouseX, mouseY)) + Math.abs(Yratio(sunny.pos.x, sunny.pos.y,
       mouseX, mouseY)));
@@ -169,41 +179,49 @@ function stageLoad() {
   sctx.clearRect(0, 0, caster.width, caster.height)
   //asdfghjkl dont ask, noooooo fukn clu wjats going on here
   for(let i = 0; i < rays.length; i++) {
-   let shader = "rgba(0,0,0,"+Math.abs((map(rays[i].length,0,renderdist,0,120)/100)-1)+")"
+   let shader = "rgba(0,0,0,"+(Math.abs((map(rays[i].length,0,renderdist*shadeBuff,0,100)/100)-1)*shadeBuff)+")"
    let curntXStart = i * (400 / rays.length);
    let curnyXEnd = (400 / rays.length)+1;
    //draw the item
     sctx.fillStyle = rays[i].rgb 
-    sctx.fillRect(curntXStart, ( rays[i].length/2)-10, curnyXEnd, (rays[i].length+(rays[i].length/2))+25)
+    sctx.fillRect(curntXStart, ( rays[i].length/2), curnyXEnd, (rays[i].length+(rays[i].length/2))+25)
     //draw the floor
     sctx.fillStyle = floorColor
-    sctx.fillRect(curntXStart, (( rays[i].length/2)-10)+(rays[i].length+(rays[i].length/2))+25, curnyXEnd, 400)
+    sctx.fillRect(curntXStart, (( rays[i].length/2))+(rays[i].length+(rays[i].length/2))+25, curnyXEnd, 400)
     //shade the item
     sctx.fillStyle = shader
-    sctx.fillRect(curntXStart, ( rays[i].length/2)-10, curnyXEnd, (rays[i].length+(rays[i].length/2))+25)
-stageCon.innerHTML= shader
+    sctx.fillRect(curntXStart, ( rays[i].length/2), curnyXEnd, (rays[i].length+(rays[i].length/2))+25)
+    stageCon.innerHTML= shadeBuff
+
 }
+statUpdate()
 }
+function statUpdate() {
+  addedView = parseInt(document.getElementById("addedV").value)
+  shadeBuff =  parseInt(document.getElementById("shadeB").value)/100
+}
+
 // ***************************************************************
 document.onkeydown = keypress;
 
 function keypress(event) {
   central.innerHTML = event.code
-  switch(event.code) {
-    case "Space":
+  switch(event.key) {
+    case " "://space
+  
       setInterval(gameLoad, 1000 / 25);
       setInterval(stageLoad, 1000 / 25);
       break;
-    case "ArrowRight":
+    case "d":
       sunny.pos.x += sunny.speed
       break;
-    case "ArrowUp":
+    case "w":
       sunny.pos.y -= sunny.speed
       break;
-    case "ArrowLeft":
+    case "a":
       sunny.pos.x -= sunny.speed
       break;
-    case "ArrowDown":
+    case "s":
       sunny.pos.y += sunny.speed
       break;
     default:
