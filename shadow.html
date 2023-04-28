@@ -75,6 +75,13 @@ class position {
     this.y = y
   }
 }
+const caster = document.getElementById("caster");//djdkkdkdkdkdkdk
+const ctx = caster.getContext("2d");
+const castCon = document.getElementById("castCons");
+const central = document.getElementById("central");
+const stageCon = document.getElementById("stageCons");
+const stage = document.getElementById("stage");
+const sctx = stage.getContext("2d");
 var debugMode = false
 const roofColor= "#AA79B9";
 const floorColor= "#011638";
@@ -83,13 +90,7 @@ var shadeBuff = .5
 const pixlRate = 1
 const distRez= 3
 var addedView = 5
-const caster = document.getElementById("caster");//djdkkdkdkdkdkdk
-const ctx = caster.getContext("2d");
-const castCon = document.getElementById("castCons");
-const central = document.getElementById("central");
-const stageCon = document.getElementById("stageCons");
-const stage = document.getElementById("stage");
-const sctx = stage.getContext("2d");
+
 var mouseX = 180
 var mouseY = 200
 var rays = [];
