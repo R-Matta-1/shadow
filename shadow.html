@@ -71,6 +71,7 @@ class position {
     this.y = y
   }
 }
+
 var debugMode = false
 const roofColor= "#AA79B9";
 const floorColor= "#011638";
@@ -136,8 +137,8 @@ function gameLoad() {
   var rayAmount =0 //(Math.abs((sunny.size * -1)-addedView)+ sunny.size+addedView)/pixlRate
   for(let i = (sunny.size * -1)-addedView; i < sunny.size+addedView; i += pixlRate) {
     rayAmount++
-    let directX =   trigX((i/Math.PI)+(Xratio(sunny.pos.x, sunny.pos.y, mouseX, mouseY)*25))      //Xratio(sunny.pos.x, sunny.pos.y, mouseX, mouseY);
-    let directY =  trigY((i/Math.PI)+Yratio(sunny.pos.x, sunny.pos.y, mouseX, mouseY)*25)    // Yratio(sunny.pos.x, sunny.pos.y, mouseX, mouseY);
+    let directX =   trigX(i/Math.PI)      //Xratio(sunny.pos.x, sunny.pos.y, mouseX, mouseY);
+    let directY =  trigY(i/Math.PI)    // Yratio(sunny.pos.x, sunny.pos.y, mouseX, mouseY);
 
     let it = 0
     while(renderdist >= it) {
@@ -147,10 +148,14 @@ function gameLoad() {
       
       ctx.fillStyle = "black"
       //to later be used as a post-scan loaded debuging tool as to not interact with the data colection
-     if(debugMode == true){ctx.fillRect(startX + (it * directX), startY + (it * directY),1, 1, )}
+     if(debugMode == true){
+      sctx.fillRect(startX + (it * directX), startY + (it * directY),1, 1, )
+    }
+      //sctx.fillRect(startX + (it * directX), startY + (it * directY),1, 1, )}
       it += distRez
       //done
       if(imgdata != "0,0,0,0") { break }
+
     }
     rays.length = (Math.abs((sunny.size * -1)-addedView) + sunny.size+addedView) / pixlRate;
     //after the while loop ends iether through break or of length it gets sorted here
@@ -166,8 +171,10 @@ ctx.lineTo(mouseX, mouseY);
 ctx.stroke();
 castCon.innerHTML =  rays.length+" and it should be "+rayAmount+" and "+ (1 * (400 / rays.length))  +"isthe first 2/400"
   //??
-  central.innerHTML = " angle of sun to mouse= " +"";
+
   //what the f#*@ is going on up thier??
+
+
 }
 
 function stageLoad() {
