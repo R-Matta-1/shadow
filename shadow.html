@@ -126,9 +126,9 @@ function gameLoad() {
   //THIS IS THE DRAW ZONE; things placed here will have rays casted apon them
 
   borderRect(ctx,0,100,50,400,10,"#789","#123")
-  borderRect(ctx,120,120,30,80,20,"red","#500")
+  borderRect(ctx,120,120,30,80,10,"red","#500")
   borderRect(ctx,170,170,30,80,10,"green","#050")
-  borderRect(ctx,220,220,30,80,5,"blue","#005")
+  borderRect(ctx,220,220,30,80,10,"blue","#005")
 
   /*here we need to track the wmount of rays made automaticly becasue... 
   well because fuck you thats why we willl to this wuth the following ray Ammount varubl*/
@@ -157,6 +157,7 @@ function gameLoad() {
     //after the while loop ends iether through break or of length it gets sorted here
     rays.shift()
     rays.push(new ray(i, imgdata, it))
+    //could also make it a get dist
     /*FOR LOOP*/}
   sunny.draw()
   ctx.fillStyle = "black"
