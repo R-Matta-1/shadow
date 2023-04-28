@@ -61,7 +61,7 @@
 
   <button onclick="bellowthis()">debug</button>
 <script>
-//laptp
+
 function bellowthis() {
    if(debugMode==true){debugMode=false}else{debugMode=true}
 }
@@ -136,14 +136,13 @@ function gameLoad() {
   var rayAmount =0 //(Math.abs((sunny.size * -1)-addedView)+ sunny.size+addedView)/pixlRate
   for(let i = (sunny.size * -1)-addedView; i < sunny.size+addedView; i += pixlRate) {
     rayAmount++
-    let directX = Xratio(sunny.pos.x, sunny.pos.y, mouseX, mouseY);
-    let directY = Yratio(sunny.pos.x, sunny.pos.y, mouseX, mouseY);
-    let leftX = Yratio(sunny.pos.x, sunny.pos.y, mouseX, mouseY) * -1;
-    let leftY = Xratio(sunny.pos.x, sunny.pos.y, mouseX, mouseY);
+    let directX =   trigX(i)      //Xratio(sunny.pos.x, sunny.pos.y, mouseX, mouseY);
+    let directY =  trigY(i)        // Yratio(sunny.pos.x, sunny.pos.y, mouseX, mouseY);
+
     let it = 0
     while(renderdist >= it) {
-      let startX = sunny.pos.x + (i * leftX);
-      let startY = sunny.pos.y + (i * leftY);
+      let startX = sunny.pos.x ;
+      let startY = sunny.pos.y ;
       var imgdata = ctx.getImageData(startX + (it * directX), startY +(it * directY), 1, 1, { colorSpace: "srgb" }).data.toString()
       
       ctx.fillStyle = "black"
@@ -167,13 +166,7 @@ ctx.lineTo(mouseX, mouseY);
 ctx.stroke();
 castCon.innerHTML =  rays.length+" and it should be "+rayAmount+" and "+ (1 * (400 / rays.length))  +"isthe first 2/400"
   //??
-  central.innerHTML = " x = " + Math.floor(Xratio(sunny.pos.x, sunny
-      .pos.y, mouseX, mouseY * 100)) + 
-    " y = " + Math.floor(Yratio(
-      sunny.pos.x, sunny.pos.y, mouseX, mouseY) * 100) + 
-    " total change = " + (Math.abs(Xratio(sunny.pos.x, sunny.pos.y,
-      mouseX, mouseY)) + Math.abs(Yratio(sunny.pos.x, sunny.pos.y,
-      mouseX, mouseY)));
+  central.innerHTML = " angle of sun to mouse= " +"";
   //what the f#*@ is going on up thier??
 }
 
@@ -269,7 +262,12 @@ function getDistance(x1, y1, x2, y2) {
   let y = x2 - x1;
   let x = y2 - y1;
   return Math.sqrt(x * x + y * y);}
-
+function trigX (angle){
+  return Math.cos((angle+(-90))*(Math.PI/180));
+}
+function trigY(angle) {
+return Math.sin((angle+(-90))*(Math.PI/180));
+}
 
   </script>
 </body>
