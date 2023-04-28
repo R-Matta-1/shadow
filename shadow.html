@@ -136,8 +136,8 @@ function gameLoad() {
   var rayAmount =0 //(Math.abs((sunny.size * -1)-addedView)+ sunny.size+addedView)/pixlRate
   for(let i = (sunny.size * -1)-addedView; i < sunny.size+addedView; i += pixlRate) {
     rayAmount++
-    let directX =   trigX(i)      //Xratio(sunny.pos.x, sunny.pos.y, mouseX, mouseY);
-    let directY =  trigY(i)        // Yratio(sunny.pos.x, sunny.pos.y, mouseX, mouseY);
+    let directX =   trigX((i/Math.PI)+(Xratio(sunny.pos.x, sunny.pos.y, mouseX, mouseY)*25))      //Xratio(sunny.pos.x, sunny.pos.y, mouseX, mouseY);
+    let directY =  trigY((i/Math.PI)+Yratio(sunny.pos.x, sunny.pos.y, mouseX, mouseY)*25)    // Yratio(sunny.pos.x, sunny.pos.y, mouseX, mouseY);
 
     let it = 0
     while(renderdist >= it) {
