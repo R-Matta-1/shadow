@@ -226,23 +226,27 @@ document.onkeydown = keypress;
 
 function keypress(event) {
   central.innerHTML = event.code
-  switch(event.key) {
-    case " "://space
-  
+  switch (event.key) {
+    case " ": //space
+
       setInterval(gameLoad, 1000 / 25);
       setInterval(stageLoad, 1000 / 25);
       break;
-    case "d":
-      sunny.pos.x += sunny.speed
+    case "w": //foward
+    sunny.pos.x += Xratio(sunny.pos.x,sunny.pos.y,mouseX,mouseY)*sunny.speed
+      sunny.pos.y += Yratio(sunny.pos.x,sunny.pos.y,mouseX,mouseY)*sunny.speed
       break;
-    case "w":
-      sunny.pos.y -= sunny.speed
+    case "s": //down
+    sunny.pos.x -= Xratio(sunny.pos.x,sunny.pos.y,mouseX,mouseY)*sunny.speed
+      sunny.pos.y -= Yratio(sunny.pos.x,sunny.pos.y,mouseX,mouseY)*sunny.speed
       break;
-    case "a":
-      sunny.pos.x -= sunny.speed
+    case "d": //right
+    sunny.pos.x -= Yratio(sunny.pos.x,sunny.pos.y,mouseX,mouseY)*sunny.speed
+      sunny.pos.y += Xratio(sunny.pos.x,sunny.pos.y,mouseX,mouseY)*sunny.speed 
       break;
-    case "s":
-      sunny.pos.y += sunny.speed
+    case "a": //left
+    sunny.pos.x += Yratio(sunny.pos.x,sunny.pos.y,mouseX,mouseY)*sunny.speed
+      sunny.pos.y -= Xratio(sunny.pos.x,sunny.pos.y,mouseX,mouseY)*sunny.speed 
       break;
     default:
       break;
@@ -273,7 +277,7 @@ function getDistance(x1, y1, x2, y2) {
 function trigX (angle){
   return Math.cos((angle)*(Math.PI/180));
 }
-function trigY(angle) {
+function trigY(angle) { 
 return Math.sin((angle)*(Math.PI/180));
 }
 function calcAngleDegrees(x, y) {
