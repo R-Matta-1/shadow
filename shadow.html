@@ -46,7 +46,18 @@
 #stageCons {
   top: 10px;
   left: 800px;}
+  #castShade{
+    height: 400.5px;
+  width: 400.5px;
+  border: hsl(0, 0%, 0%) 5px outset;
+  top: 50px;
+  transform: translate(50%, 0);
+  position: absolute;
+  top: 15%;
+  left: 30px;
+  }
   </style>
+  <canvas class="canvas" id="castShade"; height = 400.5 ; width = 400.5 ; onmousemove="bingo(event)" >stop using operaGX</canvas>
 <canvas class="canvas" id="caster"; height = 400.5 ; width = 400.5 ; onmousemove="bingo(event)" >stop using operaGX</canvas>
 <canvas class="canvas" id="stage"; height = 400.5 ; width = 400.5 ; onmousemove="bingo(event)">stop using operaGX</canvas>
 
@@ -71,11 +82,12 @@ class position {
     this.y = y
   }
 }
-
-var debugMode = false
+const castShader = document.getElementById("castShade")
+const ctxS = castShader.getContext("2d");
+var debugMode = true
 const roofColor= "#AA79B9";
 const floorColor= "#011638";
-const renderdist = 250
+const renderdist = 400
 var shadeBuff = .5
 const pixlRate = 1
 const distRez= 3
@@ -117,11 +129,11 @@ class theSun {
   }
 }
 var sunny = new theSun(new position(200, 50), 25, 0,
-  "rgba(255, 58, 60, .90)",15);
+  "rgba(255, 58, 60, .90)",5);
 var frames = 0
 
 function gameLoad() {
-  
+  ctxS.clearRect(0, 0, caster.width, caster.height)
   frames += 1
   ctx.clearRect(0, 0, caster.width, caster.height)
   //THIS IS THE DRAW ZONE; things placed here will have rays casted apon them
@@ -145,12 +157,19 @@ function gameLoad() {
     while(renderdist >= it) {
       let startX = sunny.pos.x ;
       let startY = sunny.pos.y ;
-      var imgdata = ctx.getImageData(startX + (it * directX), startY +(it * directY), 1, 1, { colorSpace: "srgb" }).data.toString()
+     // let xINC = ((it*(Math.abs(i)/3)) * directX)
+     // let yINC = ((it*(Math.abs(i)/3)) * directY)
+     // if (Math.abs(i)<=frames/5) {
+    let     xINC = ((it) * directX)
+    let   yINC = ((it) * directY)
+    //  }
+      var imgdata = ctx.getImageData(startX + xINC, startY +yINC,1, 1, { colorSpace: "srgb" }).data.toString()
+      //var imgdata = ctx.getImageData(startX + (it * directX), startY +(it* directY), 1, 1, { colorSpace: "srgb" }).data.toString()
       
-      ctx.fillStyle = "black"
+      ctxS.fillStyle = "black"
       //to later be used as a post-scan loaded debuging tool as to not interact with the data colection
      if(debugMode == true){
-      sctx.fillRect(startX + (it * directX), startY + (it * directY),1, 1, )
+      ctxS.fillRect(startX + xINC, startY +yINC,1, 1, )
     }
       //sctx.fillRect(startX + (it * directX), startY + (it * directY),1, 1, )}
       it += distRez
@@ -190,18 +209,18 @@ function stageLoad() {
    let shader = "rgba(0,0,0,"+(Math.abs((rays[i].length/renderdist)-1)*shadeBuff)+")"
    let curntXStart = i * (400 / rays.length);
    let curnyXEnd = (400 / rays.length)+1;
-   let startY = Math.abs((rays[i].length/2)-150)
+   let startY =(100-rays[i].length/4)//fucko
   
      
    //draw the item
     sctx.fillStyle = rays[i].rgb 
-    sctx.fillRect(curntXStart,  startY, curnyXEnd, (rays[i].length+(rays[i].length/2)))
+    sctx.fillRect(curntXStart,  startY, curnyXEnd, rays[i].length)
 
     //shade the item
     sctx.fillStyle = shader
-    sctx.fillRect(curntXStart,  startY, curnyXEnd, (rays[i].length+(rays[i].length/2)))
+    sctx.fillRect(curntXStart, startY +50, curnyXEnd, rays[i].length)
     stageCon.innerHTML= shadeBuff
-
+central.innerHTML=frames
 }
 statUpdate()
 }
