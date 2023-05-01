@@ -65,14 +65,30 @@
 <div class="cons"; id="central">websitr dosnt laod corctly</div>
 <div class="cons"; id="stageCons">mw when the </div>
 <label id="addedVLable" for="addedV">FOV
-<input type="range" name="addedV" id="addedV" min="-20" max="50" value ="10"></label>
+<input type="range" name="addedV" id="addedV" min="-20" max="50" value ="25"></label>
 
 <label id="shadeBuffLable" for="shadeB">shadeBuff
   <input type="range" name="shadeB" id="shadeB" min="0" max="100" step="1" value ="86"></label>
 
+
+
+
+
+
+    <label for="pixlR">pixlR</label>
+    <select name="pixlR" id="pixlR">
+      <option value="1">only</option>
+      <option value="2">these</option>
+      <option value="4">specific</option>
+      <option value="5">numbers</option>
+      <option value="10">work</option>
+    </select>
+
+
+
   <button onclick="bellowthis()">debug</button>
 <script>
-
+//1,2,4,5,10
 function bellowthis() {
    if(debugMode==true){debugMode=false}else{debugMode=true}
 }
@@ -87,9 +103,9 @@ const ctxS = castShader.getContext("2d");
 var debugMode = true
 const roofColor= "#AA79B9";
 const floorColor= "#011638";
-const renderdist = 400
+const renderdist = 200
 var shadeBuff = .5
-const pixlRate = 1
+var pixlRate = 1
 const distRez= 3
 var addedView = 5
 const caster = document.getElementById("caster");
@@ -99,7 +115,7 @@ const central = document.getElementById("central");
 const stageCon = document.getElementById("stageCons");
 const stage = document.getElementById("stage");
 const sctx = stage.getContext("2d");
-var mouseX = 180
+var mouseX = 200
 var mouseY = 200
 var rays = [];
 class ray {
@@ -143,10 +159,11 @@ function gameLoad() {
   borderRect(ctx,0,350,  350,50,10,"green","#050")
   borderRect(ctx,350,0,50,350,10,"blue","#005")
   borderRect(ctx,175,175,50,50,10,"black","#005")
-  borderRect(ctx,frames,frames,25,25,frames*.5,"crimson","black")
+  borderRect(ctx,frames,frames,25,25,10,"crimson","black")
   /*here we need to track the wmount of rays made automaticly becasue... 
   well because fuck you thats why we willl to this wuth the following ray Ammount varubl*/
-
+var yINC =0
+var xINC= 0
   var rayAmount =0 //(Math.abs((sunny.size * -1)-addedView)+ sunny.size+addedView)/pixlRate
   for(let i = (sunny.size * -1)-addedView; i < sunny.size+addedView; i += pixlRate) {
     rayAmount++
@@ -156,25 +173,21 @@ function gameLoad() {
 
     let it = 0
     while(renderdist >= it) {
-      let startX = sunny.pos.x ;
-      let startY = sunny.pos.y ;
      // let xINC = ((it*(Math.abs(i)/3)) * directX)
      // let yINC = ((it*(Math.abs(i)/3)) * directY)
      // if (Math.abs(i)<=frames/5) {
-    let     xINC = ((it*2+Math.abs(i/2)) * directX)
-    let   yINC = ((it*2+Math.abs(i/2)) * directY)
+         xINC = ((it*2+Math.abs(i/2)) * directX)
+       yINC = ((it*2+Math.abs(i/2)) * directY)
     //  }
-      var imgdata = ctx.getImageData(startX + xINC, startY +yINC,1, 1, { colorSpace: "srgb" }).data.toString()
+      var imgdata = ctx.getImageData(sunny.pos.x  + xINC, sunny.pos.y  +yINC,1, 1, { colorSpace: "srgb" }).data.toString()
       //var imgdata = ctx.getImageData(startX + (it * directX), startY +(it* directY), 1, 1, { colorSpace: "srgb" }).data.toString()
       
       ctxS.fillStyle = "black"
       //to later be used as a post-scan loaded debuging tool as to not interact with the data colection
      if(debugMode == true){
-      ctxS.fillRect(startX + xINC, startY +yINC,1, 1, )
+      ctxS.fillRect(sunny.pos.x  + xINC, sunny.pos.y +yINC,1, 1, )
     }
-      //sctx.fillRect(startX + (it * directX), startY + (it * directY),1, 1, )}
       it += distRez
-      //done
       if(imgdata != "0,0,0,0") { break }
 
     }
@@ -210,17 +223,17 @@ function stageLoad() {
    let shader = "rgba(0,0,0,"+(Math.abs((rays[i].length/renderdist)-1)*shadeBuff)+")"
    let curntXStart = i * (400 / rays.length);
    let curnyXEnd = (400 / rays.length)+1;
-   let startY =(Math.abs(rays[i].length-renderdist)/renderdist*100)//fucko
+   let startY =((200-rays[i].length)/renderdist*100)//fucko
   
      
    //draw the item
     sctx.fillStyle = rays[i].rgb 
-    sctx.fillRect(curntXStart, startY *2, curnyXEnd, rays[i].length*.75)
+    sctx.fillRect(curntXStart, startY , curnyXEnd, rays[i].length+80)
 //(curntXStart,  startY, curnyXEnd, rays[i].length+rays[i].length/2)
     //shade the item
     sctx.fillStyle = shader
-    sctx.fillRect(curntXStart,  startY*2, curnyXEnd, rays[i].length+rays[i].length/2)
-    stageCon.innerHTML= shadeBuff
+    sctx.fillRect(curntXStart,  startY, curnyXEnd, (rays[i].length+rays[i].length/2)+80)
+    stageCon.innerHTML=pixlRate
 central.innerHTML=frames
 }
 statUpdate()
@@ -228,6 +241,7 @@ statUpdate()
 function statUpdate() {
   addedView = parseInt(document.getElementById("addedV").value)
   shadeBuff =  parseInt(document.getElementById("shadeB").value)/100
+  pixlRate = parseInt(document.getElementById("pixlR").value)
 }
 function borderRect(Fctx,x,y,x2,y2,border,color,borderC) {
   let borderSize=0
@@ -248,8 +262,8 @@ function keypress(event) {
   central.innerHTML = event.code
   switch (event.key) {
     case " ": //space
-      setInterval(gameLoad, 1000 / 50);
-      setInterval(stageLoad, 1000 / 50);
+      setInterval(gameLoad, 1000 / 25);
+      setInterval(stageLoad, 1000 / 25);
       break;
     case "w": //foward
     sunny.pos.x += Xratio(sunny.pos.x,sunny.pos.y,mouseX,mouseY)*sunny.speed
