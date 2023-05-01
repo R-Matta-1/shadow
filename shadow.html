@@ -138,11 +138,12 @@ function gameLoad() {
   ctx.clearRect(0, 0, caster.width, caster.height)
   //THIS IS THE DRAW ZONE; things placed here will have rays casted apon them
 
-  borderRect(ctx,0,100,50,400,10,"#789","#123")
-  borderRect(ctx,120,120,30,80,10,"red","#500")
-  borderRect(ctx,170,170,30,80,10,"green","#050")
-  borderRect(ctx,220,220,30,80,10,"blue","#005")
-
+  borderRect(ctx,0,0,    50,350,10,"#789","#123")
+  borderRect(ctx,0,0,  350,50,10,"red","#500")
+  borderRect(ctx,0,350,  350,50,10,"green","#050")
+  borderRect(ctx,350,0,50,350,10,"blue","#005")
+  borderRect(ctx,175,175,50,50,10,"black","#005")
+  borderRect(ctx,frames,frames,25,25,frames*.5,"crimson","black")
   /*here we need to track the wmount of rays made automaticly becasue... 
   well because fuck you thats why we willl to this wuth the following ray Ammount varubl*/
 
@@ -160,8 +161,8 @@ function gameLoad() {
      // let xINC = ((it*(Math.abs(i)/3)) * directX)
      // let yINC = ((it*(Math.abs(i)/3)) * directY)
      // if (Math.abs(i)<=frames/5) {
-    let     xINC = ((it) * directX)
-    let   yINC = ((it) * directY)
+    let     xINC = ((it*2+Math.abs(i/2)) * directX)
+    let   yINC = ((it*2+Math.abs(i/2)) * directY)
     //  }
       var imgdata = ctx.getImageData(startX + xINC, startY +yINC,1, 1, { colorSpace: "srgb" }).data.toString()
       //var imgdata = ctx.getImageData(startX + (it * directX), startY +(it* directY), 1, 1, { colorSpace: "srgb" }).data.toString()
@@ -209,16 +210,16 @@ function stageLoad() {
    let shader = "rgba(0,0,0,"+(Math.abs((rays[i].length/renderdist)-1)*shadeBuff)+")"
    let curntXStart = i * (400 / rays.length);
    let curnyXEnd = (400 / rays.length)+1;
-   let startY =(100-rays[i].length/4)//fucko
+   let startY =(Math.abs(rays[i].length-renderdist)/renderdist*100)//fucko
   
      
    //draw the item
     sctx.fillStyle = rays[i].rgb 
-    sctx.fillRect(curntXStart,  startY, curnyXEnd, rays[i].length)
-
+    sctx.fillRect(curntXStart, startY *2, curnyXEnd, rays[i].length*.75)
+//(curntXStart,  startY, curnyXEnd, rays[i].length+rays[i].length/2)
     //shade the item
     sctx.fillStyle = shader
-    sctx.fillRect(curntXStart, startY +50, curnyXEnd, rays[i].length)
+    sctx.fillRect(curntXStart,  startY*2, curnyXEnd, rays[i].length+rays[i].length/2)
     stageCon.innerHTML= shadeBuff
 central.innerHTML=frames
 }
@@ -247,9 +248,8 @@ function keypress(event) {
   central.innerHTML = event.code
   switch (event.key) {
     case " ": //space
-
-      setInterval(gameLoad, 1000 / 25);
-      setInterval(stageLoad, 1000 / 25);
+      setInterval(gameLoad, 1000 / 50);
+      setInterval(stageLoad, 1000 / 50);
       break;
     case "w": //foward
     sunny.pos.x += Xratio(sunny.pos.x,sunny.pos.y,mouseX,mouseY)*sunny.speed
