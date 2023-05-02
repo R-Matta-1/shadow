@@ -157,7 +157,7 @@ function gameLoad() {
   borderRect(ctx,0,0,    50,350,10,"#789","#123")
   borderRect(ctx,0,0,  350,50,10,"red","#500")
   borderRect(ctx,0,350,  350,50,10,"green","#050")
-  borderRect(ctx,350,0,50,350,10,"blue","#005")
+  borderRect(ctx,350,150,50,50,10,"blue","#005")
   borderRect(ctx,175,175,50,50,10,"black","#005")
   borderRect(ctx,frames,frames,25,25,10,"crimson","black")
   /*here we need to track the wmount of rays made automaticly becasue... 
@@ -176,8 +176,10 @@ var xINC= 0
      // let xINC = ((it*(Math.abs(i)/3)) * directX)
      // let yINC = ((it*(Math.abs(i)/3)) * directY)
      // if (Math.abs(i)<=frames/5) {
-         xINC = ((it*2+Math.abs(i/2)) * directX)
-       yINC = ((it*2+Math.abs(i/2)) * directY)
+      let inc = Math.abs(Math.cos(i/((sunny.size+addedView)*2)/Math.PI))*(-1*Math.abs(i))+Math.abs(i)
+      stageCon.innerHTML=inc
+         xINC = (inc*50+it*2)* directX
+       yINC = (inc*50+it*2)* directY
     //  }
       var imgdata = ctx.getImageData(sunny.pos.x  + xINC, sunny.pos.y  +yINC,1, 1, { colorSpace: "srgb" }).data.toString()
       //var imgdata = ctx.getImageData(startX + (it * directX), startY +(it* directY), 1, 1, { colorSpace: "srgb" }).data.toString()
@@ -190,11 +192,11 @@ var xINC= 0
       it += distRez
       if(imgdata != "0,0,0,0") { break }
 
-    }
+     }
     rays.length = (Math.abs((sunny.size * -1)-addedView) + sunny.size+addedView) / pixlRate;
     //after the while loop ends iether through break or of length it gets sorted here
     rays.shift()
-    rays.push(new ray(i, imgdata, it))
+    rays.push(new ray(i, imgdata,it))//givenDiffDist(xINC,yINC)))
     //could also make it a get dist
     /*FOR LOOP*/}
   sunny.draw()
@@ -203,22 +205,19 @@ var xINC= 0
 ctx.moveTo(sunny.pos.x, sunny.pos.y);
 ctx.lineTo(mouseX, mouseY);
 ctx.stroke();
-castCon.innerHTML =  rays.length+" and it should be "+rayAmount+" and "+ (1 * (400 / rays.length))  +"isthe first 2/400"
-  //??
-
-  //what the f#*@ is going on up thier??
+castCon.innerHTML =  rays.length+" and it should be "+rayAmount+" and "+ (1 * (400 / rays.length))  +"is"+rays.length/400
 
 
 }
 
 function stageLoad() {
-  sctx.clearRect(0, 0, caster.width, caster.height)
+ 
   //asdfghjkl dont ask, noooooo fukn clu wjats going on here
     //draw the floor
     sctx.fillStyle = floorColor
-    sctx.fillRect(0,  150, 400, 250)
+    sctx.fillRect(0,  200, 400, 250)
     sctx.fillStyle = roofColor
-    sctx.fillRect(0,  0, 400, 150)
+    sctx.fillRect(0,  0, 400, 200)
   for(let i = 0; i < rays.length; i++) {
    let shader = "rgba(0,0,0,"+(Math.abs((rays[i].length/renderdist)-1)*shadeBuff)+")"
    let curntXStart = i * (400 / rays.length);
@@ -228,12 +227,12 @@ function stageLoad() {
      
    //draw the item
     sctx.fillStyle = rays[i].rgb 
-    sctx.fillRect(curntXStart, startY , curnyXEnd, rays[i].length+80)
+    sctx.fillRect(curntXStart, startY*2 , curnyXEnd, rays[i].length*2)
 //(curntXStart,  startY, curnyXEnd, rays[i].length+rays[i].length/2)
     //shade the item
     sctx.fillStyle = shader
-    sctx.fillRect(curntXStart,  startY, curnyXEnd, (rays[i].length+rays[i].length/2)+80)
-    stageCon.innerHTML=pixlRate
+    sctx.fillRect(curntXStart,  startY*2, curnyXEnd, (rays[i].length+rays[i].length/2)*2)
+    
 central.innerHTML=frames
 }
 statUpdate()
@@ -262,8 +261,8 @@ function keypress(event) {
   central.innerHTML = event.code
   switch (event.key) {
     case " ": //space
-      setInterval(gameLoad, 1000 / 25);
-      setInterval(stageLoad, 1000 / 25);
+      setInterval(gameLoad, 1000 / 10);
+      setInterval(stageLoad, 1000 / 10);
       break;
     case "w": //foward
     sunny.pos.x += Xratio(sunny.pos.x,sunny.pos.y,mouseX,mouseY)*sunny.speed
@@ -315,6 +314,9 @@ return Math.sin((angle)*(Math.PI/180));
 }
 function calcAngleDegrees(x, y) {
   return Math.atan2(y, x) * 180 / Math.PI;
+}
+function givenDiffDist(x,y) {
+  return Math.sqrt(x * x + y * y)
 }
 
   </script>
