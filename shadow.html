@@ -68,24 +68,15 @@
 <input type="range" name="addedV" id="addedV" min="-20" max="50" value ="25"></label>
 
 <label id="shadeBuffLable" for="shadeB">shadeBuff
-  <input type="range" name="shadeB" id="shadeB" min="0" max="100" step="1" value ="86"></label>
-
-
-
-
-
-
+  <input type="range" value="2" name="shadeB" id="shadeB" min="0" max="100" step="1" value ="86"></label>
     <label for="pixlR">pixlR</label>
     <select name="pixlR" id="pixlR">
-      <option value="1">only</option>
-      <option value="2">these</option>
-      <option value="4">specific</option>
-      <option value="5">numbers</option>
-      <option value="10">work</option>
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+      <option value="10">10</option>
     </select>
-
-
-
   <button onclick="bellowthis()">debug</button>
 <script>
 //1,2,4,5,10
@@ -101,8 +92,8 @@ class position {
 const castShader = document.getElementById("castShade")
 const ctxS = castShader.getContext("2d");
 var debugMode = true
-const roofColor= "#AA79B9";
-const floorColor= "#011638";
+const roofColor= "black";
+const floorColor= "black";
 const renderdist = 200
 var shadeBuff = .5
 var pixlRate = 1
@@ -154,11 +145,11 @@ function gameLoad() {
   ctx.clearRect(0, 0, caster.width, caster.height)
   //THIS IS THE DRAW ZONE; things placed here will have rays casted apon them
 
-  borderRect(ctx,0,0,    50,350,10,"#789","#123")
-  borderRect(ctx,0,0,  350,50,10,"red","#500")
-  borderRect(ctx,0,350,  350,50,10,"green","#050")
-  borderRect(ctx,350,150,50,50,10,"blue","#005")
-  borderRect(ctx,175,175,50,50,10,"black","#005")
+  borderRect(ctx,0,0,    50,50,10,"white","#123")
+  borderRect(ctx,0,0,  50,50,10,"white","#500")
+  borderRect(ctx,0,350,  50,50,10,"white","#050")
+  borderRect(ctx,350,150,50,50,10,"white","#005")
+  borderRect(ctx,75,75,50,50,10,"white","#005")
   borderRect(ctx,frames,frames,25,25,10,"crimson","black")
   /*here we need to track the wmount of rays made automaticly becasue... 
   well because fuck you thats why we willl to this wuth the following ray Ammount varubl*/
@@ -168,14 +159,14 @@ var xINC= 0
   for(let i = (sunny.size * -1)-addedView; i < sunny.size+addedView; i += pixlRate) {
     rayAmount++
     let directX =   trigX(calcAngleDegrees(mouseX-sunny.pos.x,mouseY-sunny.pos.y)+i) 
-    let directY =   trigY(calcAngleDegrees(mouseX-sunny.pos.x,mouseY-sunny.pos.y)+i)      //Xratio(sunny.pos.x, sunny.pos.y, mouseX, mouseY);
+    let directY =   trigY(calcAngleDegrees(mouseX-sunny.pos.x,mouseY-sunny.pos.y)+i)        //Xratio(sunny.pos.x, sunny.pos.y, mouseX, mouseY);
        // Yratio(sunny.pos.x, sunny.pos.y, mouseX, mouseY);
 
     let it = 0
     while(renderdist >= it) {
      // let xINC = ((it*(Math.abs(i)/3)) * directX)
      // let yINC = ((it*(Math.abs(i)/3)) * directY)
-     // if (Math.abs(i)<=frames/5) {
+     // if (Math.abs(i)<=frames/5) { 
       let inc = Math.abs(Math.cos(i/((sunny.size+addedView)*2)/Math.PI))*(-1*Math.abs(i))+Math.abs(i)
       stageCon.innerHTML=inc
          xINC = (inc*50+it*2)* directX
@@ -219,7 +210,7 @@ function stageLoad() {
     sctx.fillStyle = roofColor
     sctx.fillRect(0,  0, 400, 200)
   for(let i = 0; i < rays.length; i++) {
-   let shader = "rgba(0,0,0,"+(Math.abs((rays[i].length/renderdist)-1)*shadeBuff)+")"
+   let shader = "rgba(255,255,255,"+(Math.abs((rays[i].length/renderdist)-1)*shadeBuff)+")"
    let curntXStart = i * (400 / rays.length);
    let curnyXEnd = (400 / rays.length)+1;
    let startY =((200-rays[i].length)/renderdist*100)//fucko
